@@ -1,16 +1,18 @@
-export const START_CHARACTER = '@';
+import {ILettersMap} from "./path-finder.interface";
 
-export const END_CHARACTER = 'x';
+export const START_CHARACTER: string = '@';
 
-export const INTERSECTION_CHARACTER = '+';
+export const END_CHARACTER: string = 'x';
 
-export const HORIZONTAL_MOVEMENT_CHARACTER  = '-';
+export const INTERSECTION_CHARACTER: string = '+';
 
-export const VERTICAL_MOVEMENT_CHARACTER  = '|';
+export const HORIZONTAL_MOVEMENT_CHARACTER: string  = '-';
 
-export const EMPTY_SPACE_CHARACTER = '';
+export const VERTICAL_MOVEMENT_CHARACTER: string  = '|';
 
-export const VALID_CHARACTERS = {
+export const EMPTY_SPACE_CHARACTER: string = '';
+
+export const LETTER_CHARACTERS: ILettersMap = {
     'A': true,
     'B': true,
     'C': true,
@@ -39,6 +41,15 @@ export const VALID_CHARACTERS = {
     'Z': true,
 }
 
-export type Direction = 'up' | 'down' | 'left' | 'right';
+export const VALID_CHARACTERS: ILettersMap = {
+    ...LETTER_CHARACTERS,
+    [START_CHARACTER]: true,
+    [END_CHARACTER]: true,
+    [INTERSECTION_CHARACTER]: true,
+    [HORIZONTAL_MOVEMENT_CHARACTER]: true,
+    [VERTICAL_MOVEMENT_CHARACTER]: true
+};
 
-export type Error = 'Missing start character' | 'Broken path';
+export type Direction = 'up' | 'down' | 'left' | 'right' | null;
+
+export type Error = 'Missing start character' | 'Multiple starts' | 'Missing end character' | 'Multiple ends' | 'Invalid character found' | 'Broken path' | null;
