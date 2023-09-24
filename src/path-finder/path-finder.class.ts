@@ -57,27 +57,23 @@ export class PathFinderHelper {
         return isCharacterValid;
     }
 
-    public static doestNextCharacterExist(map: string[][], currentPosition: IPosition, direction: Direction): boolean {
-        let doesNextCharacterExist: boolean = true;
+    public static getNextDirectionPosition(currentPosition: IPosition, direction: Direction): IPosition {
+        const nextPotentialPosition: IPosition = { x: currentPosition.x, y: currentPosition.y };
         switch (direction) {
             case 'up':
-                doesNextCharacterExist =
-                    this.isPositionWithinMapBounds(map, currentPosition.x-1, currentPosition.y) && !!map[currentPosition.x-1][currentPosition.y];
+                nextPotentialPosition.x--;
                 break;
             case 'down':
-                doesNextCharacterExist =
-                    this.isPositionWithinMapBounds(map, currentPosition.x+1, currentPosition.y) && !!map[currentPosition.x+1][currentPosition.y];
+                nextPotentialPosition.x++;
                 break;
             case 'right':
-                doesNextCharacterExist =
-                    this.isPositionWithinMapBounds(map, currentPosition.x, currentPosition.y+1) && !!map[currentPosition.x][currentPosition.y+1];
+                nextPotentialPosition.y++;
                 break;
             case 'left':
-                doesNextCharacterExist =
-                    this.isPositionWithinMapBounds(map, currentPosition.x, currentPosition.y-1) && !!map[currentPosition.x][currentPosition.y-1];
+                nextPotentialPosition.y--;
                 break;
         }
-        return doesNextCharacterExist;
+        return nextPotentialPosition;
     }
 }
 
@@ -96,10 +92,20 @@ export class PathDirection {
         const currentY: number = this.currentPosition.y;
         console.log('[PathDirection] X:', currentX);
         console.log('[PathDirection] Y:', currentY);
-        const isUpPositionValid = PathFinderHelper.isCharacterValid(this.map, currentX-1, currentY) && !this.visitedPathPositions[`${currentX-1},${currentY}`];
-        const isDownPositionValid = PathFinderHelper.isCharacterValid(this.map, currentX+1, currentY) && !this.visitedPathPositions[`${currentX+1},${currentY}`];
-        const isRightPositionValid = PathFinderHelper.isCharacterValid(this.map, currentX, currentY+1) && !this.visitedPathPositions[`${currentX},${currentY+1}`];
-        const isLeftPositionValid = PathFinderHelper.isCharacterValid(this.map, currentX, currentY-1) && !this.visitedPathPositions[`${currentX},${currentY-1}`];
+
+        const upPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'up');
+        const isUpPositionValid: boolean =
+            PathFinderHelper.isCharacterValid(this.map, upPosition.x, upPosition.y) && !this.visitedPathPositions[`${upPosition.x},${upPosition.y}`];
+        const downPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'down');
+        const isDownPositionValid: boolean =
+            PathFinderHelper.isCharacterValid(this.map, downPosition.x, downPosition.y) && !this.visitedPathPositions[`${downPosition.x},${downPosition.y}`];
+        const rightPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'right');
+        const isRightPositionValid: boolean =
+            PathFinderHelper.isCharacterValid(this.map, rightPosition.x, rightPosition.y) && !this.visitedPathPositions[`${rightPosition.x},${rightPosition.y}`];
+        const leftPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'left');
+        const isLeftPositionValid: boolean =
+            PathFinderHelper.isCharacterValid(this.map, leftPosition.x, leftPosition.y) && !this.visitedPathPositions[`${leftPosition.x},${leftPosition.y}`];
+
         if (isUpPositionValid) {
             this.nextDirection = 'up';
         } else if (isDownPositionValid) {
@@ -125,25 +131,12 @@ export class PathPosition {
     }
 
     protected determineNextPosition(): void {
-        const doesNextCharacterExist = PathFinderHelper.doestNextCharacterExist(this.map, this.currentPosition, this.currentDirection);
-        if (!doesNextCharacterExist) {
+        const nextPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, this.currentDirection);
+        if (!PathFinderHelper.isCharacterValid(this.map, nextPosition.x, nextPosition.y)) {
             this.error = 'Broken path';
             return;
         }
-        switch (this.currentDirection) {
-            case 'up':
-                this.nextPosition = { x: this.currentPosition.x-1, y: this.currentPosition.y } as IPosition;
-                break;
-            case 'down':
-                this.nextPosition = { x: this.currentPosition.x+1, y: this.currentPosition.y } as IPosition;
-                break;
-            case 'right':
-                this.nextPosition = { x: this.currentPosition.x, y: this.currentPosition.y+1 } as IPosition;
-                break;
-            case 'left':
-                this.nextPosition = { x: this.currentPosition.x, y: this.currentPosition.y-1 } as IPosition;
-                break;
-        }
+        this.nextPosition = nextPosition;
     }
 }
 
@@ -210,8 +203,9 @@ export class PathFinder {
             character = this.map[position.x][position.y];
             if (LETTER_CHARACTERS[character]) {
                 // A check for weather or not is this an intersection
-                const doesNextCharacterExist: boolean = PathFinderHelper.doestNextCharacterExist(this.map, position, direction);
-                if (!doesNextCharacterExist) {
+                const nextPotentialPosition: IPosition = PathFinderHelper.getNextDirectionPosition(position, direction);
+                const isNextCharacterValid: boolean = PathFinderHelper.isCharacterValid(this.map, nextPotentialPosition.x, nextPotentialPosition.y);
+                if (!isNextCharacterValid) {
                     direction = null;
                 }
                 // Only add those letters which were previously not added
