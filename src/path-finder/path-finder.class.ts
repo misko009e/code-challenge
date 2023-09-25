@@ -142,7 +142,7 @@ export class PathDirection {
             isLeftPositionValid
         ].filter((isDirectionValid: boolean) => isDirectionValid).length;
         const isAFakeTurn: boolean =
-            (isAFakeUpTurn || isAFakeDownTurn || isAFakeRightTurn || isAFakeLeftTurn)&& validDirectionsPathNo === 0;
+            (isAFakeUpTurn || isAFakeDownTurn || isAFakeRightTurn || isAFakeLeftTurn) && validDirectionsPathNo === 0;
 
         if (validDirectionsPathNo > 1) {
             const character: string = this.map[this.currentPosition.x][this.currentPosition.y];
