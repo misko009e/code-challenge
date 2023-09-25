@@ -31,7 +31,7 @@ export class PathFinderHelper {
                 const char: string = map[i][j];
                 if (!!char && char === character) {
                     position.x = i;
-                    position.y = i;
+                    position.y = j;
                     position.occurrencesNo++;
                 }
             }
