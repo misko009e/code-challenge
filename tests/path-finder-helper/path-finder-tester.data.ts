@@ -116,5 +116,41 @@ export const testCases: IPathFinderTestCase[] = [
             ['', '', '', '+', '-', '-', '-', '+'],
         ],
         error: 'Missing end character'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'Multiple starts #1',
+        inputData: [
+            ['', '@', '-', '-', 'A', '-', '@', '-', '+'],
+            ['', '', '', '', '', '', '', '', '|'],
+            ['x', '-', 'B', '-', '+', '', '', '', 'C'],
+            ['', '', '', '', '|', '', '', '', '|'],
+            ['', '', '', '', '+', '-', '-', '-', '+'],
+        ],
+        error: 'Multiple starts'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'Multiple starts #2',
+        inputData: [
+            ['', '@', '-', '-', 'A', '-', '-', '-', '+'],
+            ['', '', '', '', '', '', '', '', '|'],
+            ['', '', '', '', '', '', '', '', 'C'],
+            ['', '', '', '', '', '', '', '', 'x'],
+            ['', '', '', '', '@', '-', 'B', '-', '+'],
+        ],
+        error: 'Multiple starts'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'Multiple starts #3',
+        inputData: [
+            ['', '@', '-', '-', 'A', '-', '-', 'x'],
+            ['', '', '', '', '', '', '', ''],
+            ['x', '-', 'B', '-', '+', '', '', ''],
+            ['', '', '', '', '|', '', '', ''],
+            ['', '', '', '', '@', '', '', ''],
+        ],
+        error: 'Multiple starts'
     }
 ];
