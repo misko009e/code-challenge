@@ -152,5 +152,19 @@ export const testCases: IPathFinderTestCase[] = [
             ['', '', '', '', '@', '', '', ''],
         ],
         error: 'Multiple starts'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'Multiple ends',
+        inputData: [
+            ['', '', '', '', '', 'x', '-', 'B'],
+            ['', '', '', '', '', '', '', '|'],
+            ['@', '-', '-', 'A', '-', '-', '-', '+'],
+            ['', '', '', '', '', '', '', '|'],
+            ['', '', '', 'x', '+', '', '', 'C'],
+            ['', '', '', '', '|', '', '', '|'],
+            ['', '', '', '', '-', '-', '-', '+'],
+        ],
+        error: 'Multiple ends'
     }
 ];
