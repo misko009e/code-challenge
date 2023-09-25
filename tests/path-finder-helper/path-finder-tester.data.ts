@@ -180,5 +180,16 @@ export const testCases: IPathFinderTestCase[] = [
             ['', '', '', '', '-', '-', '-', '+'],
         ],
         error: 'Fork in path'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'Broken path',
+        inputData: [
+            ['@', '-', '-', 'A', '-', '+', '', ''],
+            ['', '', '', '', '', '|', '', ''],
+            ['', '', '', '', '', '', '', ''],
+            ['', '', '', '', '', 'B', '-', 'x'],
+        ],
+        error: 'Broken path'
     }
 ];
