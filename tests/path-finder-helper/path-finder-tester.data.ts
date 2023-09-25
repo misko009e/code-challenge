@@ -104,5 +104,17 @@ export const testCases: IPathFinderTestCase[] = [
             ['', '', '', '', '+', '-', '-', '-', '+'],
         ],
         error: 'Missing start character'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'Missing end character',
+        inputData: [
+            ['@', '-', '-', 'A', '-', '-', '-', '+'],
+            ['', '', '', '', '', '', '', '|'],
+            ['', 'B', '-', '+', '', '', '', 'C'],
+            ['', '', '', '|', '', '', '', '|'],
+            ['', '', '', '+', '-', '-', '-', '+'],
+        ],
+        error: 'Missing end character'
     }
 ];
