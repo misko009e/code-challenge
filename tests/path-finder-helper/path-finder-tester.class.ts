@@ -1,5 +1,5 @@
 import { IPathFinderTestCase } from './path-finder-tester.model';
-import { IPathFinderInputData, IPathFinderOutputData, PathFinder } from '../src/path-finder';
+import { IPathFinderInputData, IPathFinderOutputData, PathFinder } from '../../src/path-finder';
 
 export class PathFinderTester {
     constructor(private testCases: IPathFinderTestCase[]) {}
