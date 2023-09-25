@@ -1,19 +1,12 @@
 import {IPathFinderInputData, IPathFinderOutputData, PathFinder} from './path-finder';
 
 // A basic example
-/*const MAP_NODES: string[][] = [
+const MAP_NODES: string[][] = [
     ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
     ['', '', '', '', '', '', '', '', '|'],
     ['x', '-', 'B', '-', '+', '', '', '', 'C'],
     ['', '', '', '', '|', '', '', '', '|'],
     ['', '', '', '', '+', '-', '-', '-', '+']
-];*/
-
-const MAP_NODES: string[][] = [
-    ['@', '-', '-', 'A', '-', '+', '', ''],
-    ['', '', '', '', '', '|', '', ''],
-    ['', '', '', '', '', '|', '', ''],
-    ['', '', '', '', '', 'B', '-', 'x'],
 ];
 
 const INPUT_DATA: IPathFinderInputData = {

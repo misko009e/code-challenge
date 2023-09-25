@@ -203,4 +203,12 @@ export const testCases: IPathFinderTestCase[] = [
         ],
         error: 'Invalid character found'
     },
+    {
+        shouldBeCorrect: false,
+        name: 'Fake turn',
+        inputData: [
+            ['@', '-', 'A', '-', '+', '-', 'B', '-', 'x'],
+        ],
+        error: 'Fake turn'
+    },
 ];
