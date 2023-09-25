@@ -56,7 +56,7 @@ export type Error =
     'Missing start character'
     | 'Multiple starts'
     | 'Missing end character'
-    | 'Multiple ends'
+    | 'Multiple starting paths'
     | 'Invalid character found'
     | 'Broken path'
     | 'Fake turn'

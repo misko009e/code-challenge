@@ -107,7 +107,6 @@ export class PathDirection {
         /*console.log('[PathDirection] Current Position:', this.currentPosition);
         console.log('[PathDirection] Previous position:', this.previousPosition);
         console.log('[PathDirection] Previous direction:', this.previousDirection);*/
-
         const upPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'up');
         const isUpMovementValid: boolean =
             PathFinderHelper.doesAnyCharacterExist(this.map, upPosition.x, upPosition.y)
@@ -146,7 +145,9 @@ export class PathDirection {
             (isAFakeUpTurn || isAFakeDownTurn || isAFakeRightTurn || isAFakeLeftTurn)&& validDirectionsPathNo === 0;
 
         if (validDirectionsPathNo > 1) {
-            this.error = 'Fork in path';
+            const character: string = this.map[this.currentPosition.x][this.currentPosition.y];
+            const isAStartingCharacter: boolean = character === START_CHARACTER;
+            this.error = isAStartingCharacter ? 'Multiple starting paths' : 'Fork in path';
         } else if (isAFakeTurn) {
             this.error = 'Fake turn';
         } else if (validDirectionsPathNo === 0) {
@@ -212,11 +213,11 @@ export class PathFinder {
         if (endCharacterMetadata.occurrencesNo === 0) {
             this.error = 'Missing end character';
             return { error: this.error } as IPathFinderOutputData;
-        } else if (endCharacterMetadata.occurrencesNo > 1) {
+        } /*else if (endCharacterMetadata.occurrencesNo > 1) {
             // This was added to differentiate path forking in case of a single end as well
             this.error = 'Multiple ends';
             return { error: this.error } as IPathFinderOutputData;
-        }
+        }*/
 
         let position: IPosition = { x: startCharacterMetadata.x, y: startCharacterMetadata.y };
         let previousPosition: IPosition = { x: -1, y: -1 };
