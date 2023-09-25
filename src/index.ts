@@ -53,11 +53,18 @@ import { IPathFinderInputData, PathFinder } from './path-finder';
 ];*/
 
 // Keep direction, even in a compact space
-const MAP_NODES: string[][] = [
+/*const MAP_NODES: string[][] = [
     ['', '+', '-', 'L', '-', '+', '', ''],
     ['', '|', '', '', '+', 'A', '-', '+'],
     ['@', 'B', '+', '', '+', '+', '', 'H'],
     ['', '+', '+', '', '', '', '', 'x'],
+];*/
+
+// Ignore stuff after end of path
+const MAP_NODES: string[][] = [
+    ['@', '-', 'A', '-', '-', '+', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '|', '', '', '', '', '', '', '', '', '', ''],
+    ['', '', '', '', '', '+', '-', 'B', '-', '-', 'x', '-', 'C', '-', '-', 'D'],
 ];
 
 const INPUT_DATA = {
