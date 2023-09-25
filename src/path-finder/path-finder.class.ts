@@ -46,6 +46,17 @@ export class PathFinderHelper {
         return isXWithinMapBounds && isYWithinMapBounds;
     }
 
+    public static doesAnyCharacterExist(map: string[][], x: number, y: number): boolean {
+        let doesAnyCharacterExist: boolean = false;
+        if (this.isPositionWithinMapBounds(map, x, y)) {
+            const character: string = map[x][y];
+            if (character !== EMPTY_SPACE_CHARACTER) {
+                doesAnyCharacterExist = true;
+            }
+        }
+        return doesAnyCharacterExist;
+    }
+
     public static isCharacterValid(map: string[][], x: number, y: number): boolean {
         let isCharacterValid: boolean = false;
         if (this.isPositionWithinMapBounds(map, x, y)) {
@@ -93,8 +104,6 @@ export class PathDirection {
     }
 
     protected determineNextDirection(): void {
-        const currentX: number = this.currentPosition.x;
-        const currentY: number = this.currentPosition.y;
         /*console.log('[PathDirection] Current X:', currentX);
         console.log('[PathDirection] Current Y:', currentY);
         console.log('[PathDirection] Previous position:', this.previousPosition);
@@ -102,25 +111,25 @@ export class PathDirection {
 
         const upPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'up');
         const isUpPositionValid: boolean =
-            PathFinderHelper.isCharacterValid(this.map, upPosition.x, upPosition.y)
+            PathFinderHelper.doesAnyCharacterExist(this.map, upPosition.x, upPosition.y)
             && PathFinderHelper.areDifferentPositions(this.previousPosition, upPosition);
         const isAFakeUpTurn: boolean = isUpPositionValid && this.currentDirection === 'up';
 
         const downPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'down');
         const isDownPositionValid: boolean =
-            PathFinderHelper.isCharacterValid(this.map, downPosition.x, downPosition.y)
+            PathFinderHelper.doesAnyCharacterExist(this.map, downPosition.x, downPosition.y)
             && PathFinderHelper.areDifferentPositions(this.previousPosition, downPosition);
         const isAFakeDownTurn: boolean = isDownPositionValid && this.currentDirection === 'down';
 
         const rightPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'right');
         const isRightPositionValid: boolean =
-            PathFinderHelper.isCharacterValid(this.map, rightPosition.x, rightPosition.y)
+            PathFinderHelper.doesAnyCharacterExist(this.map, rightPosition.x, rightPosition.y)
             && PathFinderHelper.areDifferentPositions(this.previousPosition, rightPosition);
         const isAFakeRightTurn: boolean = isRightPositionValid && this.currentDirection === 'right';
 
         const leftPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'left');
         const isLeftPositionValid: boolean =
-            PathFinderHelper.isCharacterValid(this.map, leftPosition.x, leftPosition.y)
+            PathFinderHelper.doesAnyCharacterExist(this.map, leftPosition.x, leftPosition.y)
             && PathFinderHelper.areDifferentPositions(this.previousPosition, leftPosition);
         const isAFakeLeftTurn: boolean = isLeftPositionValid && this.currentDirection === 'left';
 
@@ -163,8 +172,11 @@ export class PathPosition {
 
     protected determineNextPosition(): void {
         const nextPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, this.currentDirection);
-        if (!PathFinderHelper.isCharacterValid(this.map, nextPosition.x, nextPosition.y)) {
+        if (!PathFinderHelper.doesAnyCharacterExist(this.map, nextPosition.x, nextPosition.y)) {
             this.error = 'Broken path';
+            return;
+        } else if (!PathFinderHelper.isCharacterValid(this.map, nextPosition.x, nextPosition.y)) {
+            this.error = 'Invalid character found';
             return;
         }
         this.nextPosition = nextPosition;
@@ -198,7 +210,7 @@ export class PathFinder {
             this.error = 'Missing end character';
             return { error: this.error } as IPathFinderOutputData;
         } else if (endCharacterMetadata.occurrencesNo > 1) {
-            // TODO: This might need to be removed and replaced with "Fork in path" error
+            // This was added to differentiate path forking in case of a single end as well
             this.error = 'Multiple ends';
             return { error: this.error } as IPathFinderOutputData;
         }
@@ -232,13 +244,14 @@ export class PathFinder {
             }
             position = pathPosition.nextPosition;
             // console.log(`Position: ${position.x}, ${position.y}`);
-            // console.log('*********************************************************************');
 
             character = this.map[position.x][position.y];
+            /*console.log('Character: ', character);
+            console.log('*********************************************************************');*/
             if (LETTER_CHARACTERS[character]) {
                 // A check for weather or not is this an intersection
                 const nextPotentialPosition: IPosition = PathFinderHelper.getNextDirectionPosition(position, direction);
-                const isNextCharacterValid: boolean = PathFinderHelper.isCharacterValid(this.map, nextPotentialPosition.x, nextPotentialPosition.y);
+                const isNextCharacterValid: boolean = PathFinderHelper.doesAnyCharacterExist(this.map, nextPotentialPosition.x, nextPotentialPosition.y);
                 if (!isNextCharacterValid) {
                     direction = null;
                 }
@@ -254,9 +267,6 @@ export class PathFinder {
             if (character === INTERSECTION_CHARACTER) {
                 direction = null;
             } else if (character === END_CHARACTER) {
-                isPathFinished = true;
-            } else if (!VALID_CHARACTERS[character]) {
-                this.error = 'Invalid character found';
                 isPathFinished = true;
             }
         }

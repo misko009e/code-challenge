@@ -191,5 +191,16 @@ export const testCases: IPathFinderTestCase[] = [
             ['', '', '', '', '', 'B', '-', 'x'],
         ],
         error: 'Broken path'
-    }
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'Invalid character found',
+        inputData: [
+            ['@', '-', '-', 'A', '-', '+', '', ''],
+            ['', '', '', '', '', '|', '', ''],
+            ['', '', '', '', '', '1', '', ''],
+            ['', '', '', '', '', 'B', '-', 'x'],
+        ],
+        error: 'Invalid character found'
+    },
 ];
