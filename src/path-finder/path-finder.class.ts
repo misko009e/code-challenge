@@ -255,9 +255,6 @@ export class PathFinder {
                 direction = null;
             } else if (character === END_CHARACTER) {
                 isPathFinished = true;
-            } else if (character === EMPTY_SPACE_CHARACTER) {
-                this.error = 'Broken path';
-                isPathFinished = true;
             } else if (!VALID_CHARACTERS[character]) {
                 this.error = 'Invalid character found';
                 isPathFinished = true;
