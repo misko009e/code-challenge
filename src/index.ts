@@ -1,76 +1,18 @@
-import { IPathFinderInputData, PathFinder } from './path-finder';
-
-// An empty placeholder
-/*const MAP_NODES: string[][] = [
-    ['', '', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '', '', '', '', ''],
-];*/
+import {IPathFinderInputData, IPathFinderOutputData, PathFinder} from './path-finder';
 
 // A basic example
-/*const MAP_NODES: string[][] = [
+const MAP_NODES: string[][] = [
     ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
     ['', '', '', '', '', '', '', '', '|'],
     ['x', '-', 'B', '-', '+', '', '', '', 'C'],
     ['', '', '', '', '|', '', '', '', '|'],
     ['', '', '', '', '+', '-', '-', '-', '+']
-];*/
-
-// Go straight through the intersections
-/*const MAP_NODES: string[][] = [
-    ['@', '', '', '', '', '', '', '', '', ''],
-    ['|', '', '+', '-', 'C', '-', '-', '+', '', ''],
-    ['A', '', '|', '', '', '', '', '|', '', ''],
-    ['+', '-', '-', '-', 'B', '-', '-', '+', '', ''],
-    ['', '', '|', '', '', '', '', '', '', 'x'],
-    ['', '', '|', '', '', '', '', '', '', '|'],
-    ['', '', '+', '-', '-', '-', 'D', '-', '-', '+'],
-];*/
-
-// Letters may be found on turns
-/*const MAP_NODES: string[][] = [
-    ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
-    ['', '', '', '', '', '', '', '', '|'],
-    ['x', '-', 'B', '-', '+', '', '', '', '|'],
-    ['', '', '', '', '|', '', '', '', '|'],
-    ['', '', '', '', '+', '-', '-', '-', 'C'],
-];*/
-
-// Do not collect a letter from the same location twice
-/*const MAP_NODES: string[][] = [
-    ['', '', '', '', '+', '-', 'O', '-', 'N', '-', '+', '', ''],
-    ['', '', '', '', '|', '', '', '', '', '', '|', '', ''],
-    ['', '', '', '', '|', '', '', '', '+', '-', 'I', '-', '+'],
-    ['@', '-', 'G', '-', 'O', '-', '+', '', '|', '', '|', '', '|'],
-    ['', '', '', '', '|', '', '|', '', '+', '-', '+', '', 'E'],
-    ['', '', '', '', '+', '-', '+', '', '', '', '', '', 'S'],
-    ['', '', '', '', '', '', '', '', '', '', '', '', '|'],
-    ['', '', '', '', '', '', '', '', '', '', '', '', 'x'],
-];*/
-
-// Keep direction, even in a compact space
-/*const MAP_NODES: string[][] = [
-    ['', '+', '-', 'L', '-', '+', '', ''],
-    ['', '|', '', '', '+', 'A', '-', '+'],
-    ['@', 'B', '+', '', '+', '+', '', 'H'],
-    ['', '+', '+', '', '', '', '', 'x'],
-];*/
-
-// Ignore stuff after end of path
-const MAP_NODES: string[][] = [
-    ['@', '-', 'A', '-', '-', '+', '', '', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '|', '', '', '', '', '', '', '', '', '', ''],
-    ['', '', '', '', '', '+', '-', 'B', '-', '-', 'x', '-', 'C', '-', '-', 'D'],
 ];
 
-const INPUT_DATA = {
+const INPUT_DATA: IPathFinderInputData = {
     nodes: MAP_NODES
-} as IPathFinderInputData;
+};
 
-const pathFinder = new PathFinder(INPUT_DATA);
-const solution = pathFinder.traversePath();
+const pathFinder: PathFinder = new PathFinder(INPUT_DATA);
+const solution: IPathFinderOutputData = pathFinder.traversePath();
 console.log(solution);

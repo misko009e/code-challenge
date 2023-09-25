@@ -5,7 +5,7 @@ import {
     IPathFinderInputData,
     IPathFinderOutputData,
     IPosition
-} from './path-finder.interface';
+} from './path-finder.model';
 import {
     Direction,
     END_CHARACTER,
@@ -95,10 +95,10 @@ export class PathDirection {
     protected determineNextDirection(): void {
         const currentX: number = this.currentPosition.x;
         const currentY: number = this.currentPosition.y;
-        console.log('[PathDirection] Current X:', currentX);
+        /*console.log('[PathDirection] Current X:', currentX);
         console.log('[PathDirection] Current Y:', currentY);
         console.log('[PathDirection] Previous position:', this.previousPosition);
-        console.log('[PathDirection] Current direction:', this.currentDirection);
+        console.log('[PathDirection] Current direction:', this.currentDirection);*/
 
         const upPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'up');
         const isUpPositionValid: boolean =
@@ -211,8 +211,8 @@ export class PathFinder {
         this.visitedPathPositions[`${position.x},${position.y}`] = true;
 
         while (!isPathFinished) {
-            console.log('*********************************************************************');
-            console.log('Path: ', this.path.join(''));
+            /*console.log('*********************************************************************');
+            console.log('Path: ', this.path.join(''));*/
             if (!direction) {
                 let pathDirection: PathDirection = new PathDirection(this.map, previousPosition, position, direction);
                 if (!!pathDirection.error) {
@@ -221,9 +221,9 @@ export class PathFinder {
                 }
                 direction = pathDirection.nextDirection;
             }
-            console.log('Direction: ', direction);
+            // console.log('Direction: ', direction);
             previousPosition = { ...position };
-            console.log('Previous Position: ', direction);
+            // console.log('Previous Position: ', direction);
 
             const pathPosition: PathPosition = new PathPosition(this.map, position, direction);
             if (!!pathPosition.error) {
@@ -231,8 +231,8 @@ export class PathFinder {
                 return { error: this.error } as IPathFinderOutputData;
             }
             position = pathPosition.nextPosition;
-            console.log(`Position: ${position.x}, ${position.y}`);
-            console.log('*********************************************************************');
+            // console.log(`Position: ${position.x}, ${position.y}`);
+            // console.log('*********************************************************************');
 
             character = this.map[position.x][position.y];
             if (LETTER_CHARACTERS[character]) {
