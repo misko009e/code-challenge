@@ -14,6 +14,7 @@ import { IPathFinderTestCase } from './path-finder-tester.model';
 
 export const testCases: IPathFinderTestCase[] = [
     {
+        shouldBeCorrect: true,
         name: 'A basic example',
         inputData: [
             ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
@@ -26,6 +27,7 @@ export const testCases: IPathFinderTestCase[] = [
         pathOutput: '@---A---+|C|+---+|+-B-x'
     },
     {
+        shouldBeCorrect: true,
         name: 'Go straight through the intersections',
         inputData: [
             ['@', '', '', '', '', '', '', '', '', ''],
@@ -40,6 +42,7 @@ export const testCases: IPathFinderTestCase[] = [
         pathOutput: '@|A+---B--+|+--C-+|-||+---D--+|x'
     },
     {
+        shouldBeCorrect: true,
         name: 'Letters may be found on turns',
         inputData: [
             ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
@@ -52,6 +55,7 @@ export const testCases: IPathFinderTestCase[] = [
         pathOutput: '@---A---+|||C---+|+-B-x'
     },
     {
+        shouldBeCorrect: true,
         name: 'Do not collect a letter from the same location twice',
         inputData: [
             ['', '', '', '', '+', '-', 'O', '-', 'N', '-', '+', '', ''],
@@ -67,6 +71,7 @@ export const testCases: IPathFinderTestCase[] = [
         pathOutput: '@-G-O-+|+-+|O||+-O-N-+|I|+-+|+-I-+|ES|x'
     },
     {
+        shouldBeCorrect: true,
         name: 'Keep direction, even in a compact space',
         inputData: [
             ['', '+', '-', 'L', '-', '+', '', ''],
@@ -78,6 +83,7 @@ export const testCases: IPathFinderTestCase[] = [
         pathOutput: '@B+++B|+-L-+A+++A-+Hx'
     },
     {
+        shouldBeCorrect: true,
         name: 'Ignore stuff after end of path',
         inputData: [
             ['@', '-', 'A', '-', '-', '+', '', '', '', '', '', '', '', '', '', ''],
@@ -86,5 +92,17 @@ export const testCases: IPathFinderTestCase[] = [
         ],
         lettersOutput: 'AB',
         pathOutput: '@-A--+|+-B--x'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'Missing start character',
+        inputData: [
+            ['', '', '', '-', 'A', '-', '-', '-', '+'],
+            ['', '', '', '', '', '', '', '', '|'],
+            ['x', '-', 'B', '-', '+', '', '', '', 'C'],
+            ['', '', '', '', '|', '', '', '', '|'],
+            ['', '', '', '', '+', '-', '-', '-', '+'],
+        ],
+        error: 'Missing start character'
     }
 ];

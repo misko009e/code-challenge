@@ -13,12 +13,18 @@ export class PathFinderTester {
             } as IPathFinderInputData;
             const pathFinder: PathFinder = new PathFinder(INPUT_DATA);
             const solution: IPathFinderOutputData = pathFinder.traversePath();
-            const isLettersOutputCorrect: boolean = testCase.lettersOutput === solution.letters;
-            const isPathOutputCorrect: boolean = testCase.pathOutput === solution.path;
-            console.log(`Letters comparison (expected === actual): "${testCase.lettersOutput}" === "${solution.letters}"`);
-            console.log(`Letters output: ${ isLettersOutputCorrect ? 'Correct' : 'Incorrect' }`);
-            console.log(`Path comparison (expected === actual): "${testCase.pathOutput}" === "${solution.path}"`);
-            console.log(`Path output: ${ isPathOutputCorrect ? 'Correct' : 'Incorrect' }`);
+            if (testCase.shouldBeCorrect) {
+                const isLettersOutputCorrect: boolean = testCase.lettersOutput === solution.letters;
+                const isPathOutputCorrect: boolean = testCase.pathOutput === solution.path;
+                console.log(`Letters comparison (expected === actual): "${testCase.lettersOutput}" === "${solution.letters}"`);
+                console.log(`Letters output: ${ isLettersOutputCorrect ? 'Correct' : 'Incorrect' }`);
+                console.log(`Path comparison (expected === actual): "${testCase.pathOutput}" === "${solution.path}"`);
+                console.log(`Path output: ${ isPathOutputCorrect ? 'Correct' : 'Incorrect' }`);
+            } else if (!testCase.shouldBeCorrect) {
+                const isThrownErrorCorrect: boolean = testCase.error === solution.error;
+                console.log(`Error comparison (expected === actual): "${testCase.error}" === "${solution.error}"`);
+                console.log(`Error output: ${ isThrownErrorCorrect ? 'Correct' : 'Incorrect' }`);
+            }
         });
         console.log('*********************************************************************');
     }
