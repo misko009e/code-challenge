@@ -41,7 +41,7 @@ import { IPathFinderInputData, PathFinder } from './path-finder';
 ];*/
 
 // Do not collect a letter from the same location twice
-const MAP_NODES: string[][] = [
+/*const MAP_NODES: string[][] = [
     ['', '', '', '', '+', '-', 'O', '-', 'N', '-', '+', '', ''],
     ['', '', '', '', '|', '', '', '', '', '', '|', '', ''],
     ['', '', '', '', '|', '', '', '', '+', '-', 'I', '-', '+'],
@@ -50,6 +50,14 @@ const MAP_NODES: string[][] = [
     ['', '', '', '', '+', '-', '+', '', '', '', '', '', 'S'],
     ['', '', '', '', '', '', '', '', '', '', '', '', '|'],
     ['', '', '', '', '', '', '', '', '', '', '', '', 'x'],
+];*/
+
+// Keep direction, even in a compact space
+const MAP_NODES: string[][] = [
+    ['', '+', '-', 'L', '-', '+', '', ''],
+    ['', '|', '', '', '+', 'A', '-', '+'],
+    ['@', 'B', '+', '', '+', '+', '', 'H'],
+    ['', '+', '+', '', '', '', '', 'x'],
 ];
 
 const INPUT_DATA = {
