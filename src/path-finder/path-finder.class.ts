@@ -33,19 +33,21 @@ export class PathFinder {
 
         if (this.map.length === 0) {
             this.error = 'No data';
-        } else {
+        }
+
+        if (!this.error) {
             startCharacterMetadata = PathFinderHelper.determineCharacterPosition(this.map, START_CHARACTER);
             if (startCharacterMetadata.occurrencesNo === 0) {
                 this.error = 'Missing start character';
             } else if (startCharacterMetadata.occurrencesNo > 1) {
                 this.error = 'Multiple starts';
             }
+        }
 
-            if (!this.error) {
-                const endCharacterMetadata: ICharacterMetadata = PathFinderHelper.determineCharacterPosition(this.map, END_CHARACTER);
-                if (endCharacterMetadata.occurrencesNo === 0) {
-                    this.error = 'Missing end character';
-                }
+        if (!this.error) {
+            const endCharacterMetadata: ICharacterMetadata = PathFinderHelper.determineCharacterPosition(this.map, END_CHARACTER);
+            if (endCharacterMetadata.occurrencesNo === 0) {
+                this.error = 'Missing end character';
             }
         }
 
