@@ -90,6 +90,10 @@ export class PathFinderHelper {
     public static areDifferentPositions(firstPosition: IPosition, secondPosition: IPosition): boolean {
         return firstPosition.x !== secondPosition.x || firstPosition.y !== secondPosition.y;
     }
+
+    public static isDifferentDirection(firstDirection: Direction, secondDirection: Direction): boolean {
+        return firstDirection !== secondDirection;
+    }
 }
 
 export class PathDirection {
@@ -111,29 +115,29 @@ export class PathDirection {
         const isUpMovementValid: boolean =
             PathFinderHelper.doesAnyCharacterExist(this.map, upPosition.x, upPosition.y)
             && PathFinderHelper.areDifferentPositions(this.previousPosition, upPosition);
-        const isUpPositionValid: boolean = isUpMovementValid && this.previousDirection !== 'up';
-        const isAFakeUpTurn: boolean = isUpMovementValid && this.previousDirection === 'up';
+        const isUpPositionValid: boolean = isUpMovementValid && PathFinderHelper.isDifferentDirection(this.previousDirection, 'up');
+        const isAFakeUpTurn: boolean = isUpMovementValid && !PathFinderHelper.isDifferentDirection(this.previousDirection, 'up');
 
         const downPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'down');
         const isDownMovementValid: boolean =
             PathFinderHelper.doesAnyCharacterExist(this.map, downPosition.x, downPosition.y)
             && PathFinderHelper.areDifferentPositions(this.previousPosition, downPosition);
-        const isDownPositionValid: boolean = isDownMovementValid && this.previousDirection !== 'down';
-        const isAFakeDownTurn: boolean = isDownMovementValid && this.previousDirection === 'down';
+        const isDownPositionValid: boolean = isDownMovementValid && PathFinderHelper.isDifferentDirection(this.previousDirection, 'down');
+        const isAFakeDownTurn: boolean = isDownMovementValid && !PathFinderHelper.isDifferentDirection(this.previousDirection, 'down');
 
         const rightPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'right');
         const isRightMovementValid: boolean =
             PathFinderHelper.doesAnyCharacterExist(this.map, rightPosition.x, rightPosition.y)
             && PathFinderHelper.areDifferentPositions(this.previousPosition, rightPosition);
-        const isRightPositionValid: boolean = isRightMovementValid && this.previousDirection !== 'right';
-        const isAFakeRightTurn: boolean = isRightMovementValid && this.previousDirection === 'right';
+        const isRightPositionValid: boolean = isRightMovementValid && PathFinderHelper.isDifferentDirection(this.previousDirection, 'right');
+        const isAFakeRightTurn: boolean = isRightMovementValid && !PathFinderHelper.isDifferentDirection(this.previousDirection, 'right');
 
         const leftPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, 'left');
         const isLeftMovementValid: boolean =
             PathFinderHelper.doesAnyCharacterExist(this.map, leftPosition.x, leftPosition.y)
             && PathFinderHelper.areDifferentPositions(this.previousPosition, leftPosition);
-        const isLeftPositionValid: boolean = isLeftMovementValid && this.previousDirection !== 'left';
-        const isAFakeLeftTurn: boolean = isLeftMovementValid && this.previousDirection === 'left';
+        const isLeftPositionValid: boolean = isLeftMovementValid && PathFinderHelper.isDifferentDirection(this.previousDirection, 'left');
+        const isAFakeLeftTurn: boolean = isLeftMovementValid && !PathFinderHelper.isDifferentDirection(this.previousDirection, 'left');
 
         const validDirectionsPathNo: number = [
             isUpPositionValid,
