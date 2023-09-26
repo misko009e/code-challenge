@@ -281,14 +281,16 @@ export class PathFinder {
                 if (!this.visitedPathPositions[`${position.x},${position.y}`]) {
                     this.letters.push(character);
                 }
+            } else if (character === INTERSECTION_CHARACTER) {
+                direction = null;
             }
 
+            // Log the visited path indexes
             this.visitedPathPositions[`${position.x},${position.y}`] = true;
             this.path.push(character);
 
-            if (character === INTERSECTION_CHARACTER) {
-                direction = null;
-            } else if (character === END_CHARACTER) {
+            // If a character is the end character, exit the loop
+            if (character === END_CHARACTER) {
                 isPathFinished = true;
             }
         }
