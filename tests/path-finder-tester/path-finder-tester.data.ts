@@ -95,6 +95,12 @@ export const testCases: IPathFinderTestCase[] = [
     },
     {
         shouldBeCorrect: false,
+        name: 'Empty map',
+        inputData: [],
+        error: 'No data'
+    },
+    {
+        shouldBeCorrect: false,
         name: 'Missing start character',
         inputData: [
             ['', '', '', '-', 'A', '-', '-', '-', '+'],

@@ -61,4 +61,5 @@ export type Error =
     | 'Broken path'
     | 'Fake turn'
     | 'Fork in path'
+    | 'No data'
     | null;
