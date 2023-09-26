@@ -31,3 +31,12 @@ export interface IMatrixData {
 export interface IMatrixPositionMap {
     [key: string]: boolean;
 }
+
+export interface IDirectionValidationData {
+    isValid: boolean;
+    isFakeTurn: boolean;
+}
+
+export interface IDirectionsValidationData {
+    [key: string]: IDirectionValidationData;
+}
