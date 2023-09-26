@@ -94,6 +94,32 @@ export const testCases: IPathFinderTestCase[] = [
         pathOutput: '@-A--+|+-B--x'
     },
     {
+        shouldBeCorrect: true,
+        name: 'No characters used but valid',
+        inputData: [
+            ['@', '-', '+', '', ''],
+            ['', '', '|', '', ''],
+            ['', '', '|', '', ''],
+            ['', '', '|', '', ''],
+            ['', '', '+', '-', 'x'],
+        ],
+        lettersOutput: '',
+        pathOutput: '@-+|||+-x'
+    },
+    {
+        shouldBeCorrect: true,
+        name: 'Only characters used but valid',
+        inputData: [
+            ['@', 'A', 'B', '', ''],
+            ['', '', 'C', '', ''],
+            ['', '', 'D', '', ''],
+            ['', '', 'E', '', ''],
+            ['', '', 'F', 'G', 'x'],
+        ],
+        lettersOutput: 'ABCDEFG',
+        pathOutput: '@ABCDEFGx'
+    },
+    {
         shouldBeCorrect: false,
         name: 'No data',
         inputData: [],
@@ -230,5 +256,41 @@ export const testCases: IPathFinderTestCase[] = [
             ['@', '-', 'A', '-', '+', '-', 'B', '-', 'x'],
         ],
         error: 'Fake turn'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'All start characters',
+        inputData: [
+            ['@', '@', '@', '@', '@'],
+            ['@', '@', '@', '@', '@'],
+            ['@', '@', '@', '@', '@'],
+            ['@', '@', '@', '@', '@'],
+            ['@', '@', '@', '@', '@'],
+        ],
+        error: 'Multiple starts'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'All end characters',
+        inputData: [
+            ['x', 'x', 'x', 'x', 'x'],
+            ['x', 'x', 'x', 'x', 'x'],
+            ['x', 'x', 'x', 'x', 'x'],
+            ['x', 'x', 'x', 'x', 'x'],
+            ['x', 'x', 'x', 'x', 'x'],
+        ],
+        error: 'Missing start character'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'Only invalid characters used but with valid start and end',
+        inputData: [
+            ['@', '1', '%', '', ''],
+            ['', '', '3', '', ''],
+            ['', '', '5', '', ''],
+            ['', '', '1', '', ''],
+            ['', '', '7', '2', 'x'],
+        ],
+        error: 'Invalid character found'
     },
 ];
