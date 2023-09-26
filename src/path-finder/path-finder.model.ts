@@ -7,7 +7,7 @@ export interface IPathFinderInputData {
 export interface IPathFinderOutputData {
     letters?: string;
     path?: string;
-    error: Error;
+    error?: Error;
 }
 
 export interface ILettersMap {

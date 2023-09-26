@@ -218,23 +218,29 @@ export class PathFinder {
         this.map = inputData.nodes;
     }
 
-    public traversePath(): IPathFinderOutputData {
-        let isPathFinished: boolean = false;
+    protected verifyEdgeCasesAndFindStartingPosition(): ICharacterMetadata {
         const startCharacterMetadata: ICharacterMetadata = PathFinderHelper.determineCharacterPosition(this.map, START_CHARACTER);
         if (startCharacterMetadata.occurrencesNo === 0) {
             this.error = 'Missing start character';
-            return { error: this.error } as IPathFinderOutputData;
         } else if (startCharacterMetadata.occurrencesNo > 1) {
             this.error = 'Multiple starts';
-            return { error: this.error } as IPathFinderOutputData;
         }
 
         const endCharacterMetadata: ICharacterMetadata = PathFinderHelper.determineCharacterPosition(this.map, END_CHARACTER);
         if (endCharacterMetadata.occurrencesNo === 0) {
             this.error = 'Missing end character';
+        }
+
+        return startCharacterMetadata;
+    }
+
+    public traversePath(): IPathFinderOutputData {
+        const startCharacterMetadata: ICharacterMetadata = this.verifyEdgeCasesAndFindStartingPosition();
+        if (!!this.error) {
             return { error: this.error } as IPathFinderOutputData;
         }
 
+        let isPathFinished: boolean = false;
         let position: IPosition = { x: startCharacterMetadata.x, y: startCharacterMetadata.y };
         let previousPosition: IPosition = { x: -1, y: -1 };
         let direction: Direction = null;
