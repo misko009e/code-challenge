@@ -1,5 +1,6 @@
 import { PathFinderHelper } from './path-finder-helper';
 import { PathFinderDirection } from './path-finder-direction';
+import { PathFinderPosition } from './path-finder-position';
 import {
     ICharacterMetadata,
     IMatrixPositionMap,
@@ -15,31 +16,6 @@ import {
     START_CHARACTER,
     LETTER_CHARACTERS,
 } from './common';
-
-export class PathPosition {
-    public nextPosition: IPosition = { x: -1, y: -1 };
-    public error: Error = null;
-
-    constructor(protected map: string[][],
-                protected currentPosition: IPosition,
-                protected currentDirection: Direction) {
-        this.determineNextPosition();
-    }
-
-    protected determineNextPosition(): void {
-        // We get the next position using the current direction which was previously verified, as we keep going straight
-        const nextPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, this.currentDirection);
-        // We check if there is a missing or an invalid character on the suggested direction
-        if (!PathFinderHelper.doesAnyCharacterExist(this.map, nextPosition.x, nextPosition.y)) {
-            this.error = 'Broken path';
-            return;
-        } else if (!PathFinderHelper.isCharacterValid(this.map, nextPosition.x, nextPosition.y)) {
-            this.error = 'Invalid character found';
-            return;
-        }
-        this.nextPosition = nextPosition;
-    }
-}
 
 export class PathFinder {
     protected readonly map: string[][];
@@ -96,7 +72,7 @@ export class PathFinder {
             previousPosition = { ...position };
             previousDirection = direction;
 
-            const pathPosition: PathPosition = new PathPosition(this.map, position, direction);
+            const pathPosition: PathFinderPosition = new PathFinderPosition(this.map, position, direction);
             if (!!pathPosition.error) {
                 this.error = pathPosition.error;
                 return { error: this.error } as IPathFinderOutputData;
