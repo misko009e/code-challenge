@@ -193,9 +193,9 @@ export class PathPosition {
     }
 
     protected determineNextPosition(): void {
-        // We get the next position using the current direction which was previously verified
+        // We get the next position using the current direction which was previously verified, as we keep going straight
         const nextPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, this.currentDirection);
-        // We check if
+        // We check if there is a missing or an invalid character on the suggested direction
         if (!PathFinderHelper.doesAnyCharacterExist(this.map, nextPosition.x, nextPosition.y)) {
             this.error = 'Broken path';
             return;
