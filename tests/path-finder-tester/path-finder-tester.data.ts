@@ -109,6 +109,18 @@ export const testCases: IPathFinderTestCase[] = [
     },
     {
         shouldBeCorrect: false,
+        name: 'Invalid data matrix format',
+        inputData: [
+            ['@', '-', '-', '-', 'A', '-', '-', '-', '+'],
+            ['|'],
+            ['x', '-', 'B', '-', '+', '', '', '', 'C'],
+            ['|', '', '', '', '|'],
+            ['+', '-', '-', '-', '+']
+        ],
+        error: 'Invalid data matrix format'
+    },
+    {
+        shouldBeCorrect: false,
         name: 'Missing start character',
         inputData: [
             ['', '', '', '-', 'A', '-', '-', '-', '+'],

@@ -53,7 +53,9 @@ export const VALID_CHARACTERS: ILettersMap = {
 export type Direction = 'up' | 'down' | 'left' | 'right' | null;
 
 export type Error =
-    'Missing start character'
+    'No data'
+    | 'Invalid data matrix format'
+    | 'Missing start character'
     | 'Multiple starts'
     | 'Missing end character'
     | 'Multiple starting paths'
@@ -61,5 +63,4 @@ export type Error =
     | 'Broken path'
     | 'Fake turn'
     | 'Fork in path'
-    | 'No data'
     | null;

@@ -2,7 +2,7 @@ import { PathFinderHelper } from './path-finder-helper';
 import { PathFinderDirection } from './path-finder-direction';
 import { PathFinderPosition } from './path-finder-position';
 import {
-    ICharacterMetadata,
+    ICharacterMetadata, IMatrixData,
     IMatrixPositionMap,
     IPathFinderInputData,
     IPathFinderOutputData,
@@ -33,6 +33,15 @@ export class PathFinder {
 
         if (this.map.length === 0 || this.map[0].length === 0) {
             this.error = 'No data';
+        }
+
+        if (!this.error) {
+            const { columns} = PathFinderHelper.determineMatrixSize(this.map) as IMatrixData;
+            this.map.forEach((rowData: string[]) => {
+                if (rowData.length !== columns) {
+                    this.error = 'Invalid data matrix format';
+                }
+            });
         }
 
         if (!this.error) {
@@ -88,7 +97,6 @@ export class PathFinder {
                 return { error: this.error } as IPathFinderOutputData;
             }
             position = pathPosition.nextPosition;
-            // console.log(`Position: ${position.x}, ${position.y}`);
 
             character = this.map[position.x][position.y];
             // If we encountered an intersection or a character is at an intersection, we nullify direction so it can be recalculated
