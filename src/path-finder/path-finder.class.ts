@@ -133,21 +133,19 @@ export class PathDirection {
         console.log('[PathDirection] Previous position:', this.previousPosition);
         console.log('[PathDirection] Previous direction:', this.previousDirection);*/
         let directionsValidationData: IDirectionsValidationData = {};
-        directionsValidationData['up'] =
-            PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, 'up');
-        directionsValidationData['down'] =
-            PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, 'down');
-        directionsValidationData['right'] =
-            PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, 'right');
-        directionsValidationData['left'] =
-            PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, 'left');
+        ['up', 'down', 'right', 'left'].forEach((potentialDirection: string) => {
+            directionsValidationData[potentialDirection] =
+                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, potentialDirection as Direction);
+        });
 
+        // We calculate how many valid directions there are to determine if the path is broken or we have a fork in path
         const validDirectionsPathNo: number = [
             directionsValidationData['up'].isValid,
             directionsValidationData['down'].isValid,
             directionsValidationData['right'].isValid,
             directionsValidationData['left'].isValid,
         ].filter((isDirectionValid: boolean) => isDirectionValid).length;
+        // We check if there is no other potential directions other than the fake turn direction
         const isAFakeTurn: boolean =
             (directionsValidationData['up'].isFakeTurn
                 || directionsValidationData['down'].isFakeTurn
@@ -155,22 +153,18 @@ export class PathDirection {
                 || directionsValidationData['left'].isFakeTurn)
             && validDirectionsPathNo === 0;
 
+        // We output the corresponding error or if there is no error, we set the potential direction as the next direction to use
         if (validDirectionsPathNo > 1) {
             const character: string = this.map[this.currentPosition.x][this.currentPosition.y];
             const isAStartingCharacter: boolean = character === START_CHARACTER;
             this.error = isAStartingCharacter ? 'Multiple starting paths' : 'Fork in path';
         } else if (isAFakeTurn) {
+            // Fake turn can be considered a sub-case of "Broken path" error down below, which is why we check for it before the next if
             this.error = 'Fake turn';
         } else if (validDirectionsPathNo === 0) {
             this.error = 'Broken path';
-        } else if (directionsValidationData['up'].isValid) {
-            this.nextDirection = 'up';
-        } else if (directionsValidationData['down'].isValid) {
-            this.nextDirection = 'down';
-        } else if (directionsValidationData['right'].isValid) {
-            this.nextDirection = 'right';
-        } else if (directionsValidationData['left'].isValid) {
-            this.nextDirection = 'left';
+        } else {
+            this.nextDirection = ['up', 'down', 'right', 'left'].filter((d: string) => directionsValidationData[d].isValid)[0] as Direction;
         }
     }
 }
@@ -186,7 +180,9 @@ export class PathPosition {
     }
 
     protected determineNextPosition(): void {
+        // We get the next position using the current direction which was previously verified
         const nextPosition: IPosition = PathFinderHelper.getNextDirectionPosition(this.currentPosition, this.currentDirection);
+        // We check if
         if (!PathFinderHelper.doesAnyCharacterExist(this.map, nextPosition.x, nextPosition.y)) {
             this.error = 'Broken path';
             return;
