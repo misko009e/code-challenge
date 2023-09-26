@@ -1,5 +1,6 @@
 import {
-    ICharacterMetadata, IDirectionsValidationData,
+    ICharacterMetadata,
+    IDirectionsValidationData,
     IDirectionValidationData,
     IMatrixData,
     IMatrixPositionMap,
@@ -16,6 +17,7 @@ import {
     LETTER_CHARACTERS,
     VALID_CHARACTERS, EMPTY_SPACE_CHARACTER
 } from './common';
+import { POSSIBLE_DIRECTIONS } from './const';
 
 export class PathFinderHelper {
     public static determineMatrixSize(map: string[][]): IMatrixData {
@@ -113,7 +115,8 @@ export class PathFinderHelper {
         const isValid: boolean = isAnExistingCharacter && isDifferentPositionThanPrevious && isDifferentDirectionThanPrevious;
         // We calculate is the position a fake turn based on the calculated parameters
         const isFakeTurn: boolean = isAnExistingCharacter && isDifferentPositionThanPrevious && !isDifferentDirectionThanPrevious;
-        return { isValid, isFakeTurn } as IDirectionValidationData;
+        const isCharacterValid: boolean = PathFinderHelper.isCharacterValid(map, nextPotentialPosition.x, nextPotentialPosition.y);
+        return { isValid, isFakeTurn, isCharacterValid } as IDirectionValidationData;
     }
 }
 
@@ -133,9 +136,9 @@ export class PathDirection {
         console.log('[PathDirection] Previous position:', this.previousPosition);
         console.log('[PathDirection] Previous direction:', this.previousDirection);*/
         let directionsValidationData: IDirectionsValidationData = {};
-        ['up', 'down', 'right', 'left'].forEach((potentialDirection: string) => {
-            directionsValidationData[potentialDirection] =
-                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, potentialDirection as Direction);
+        POSSIBLE_DIRECTIONS.forEach((potentialDirection: Direction) => {
+            directionsValidationData[potentialDirection as string] =
+                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, potentialDirection);
         });
 
         // We calculate how many valid directions there are to determine if the path is broken or we have a fork in path
@@ -153,6 +156,14 @@ export class PathDirection {
                 || directionsValidationData['left'].isFakeTurn)
             && validDirectionsPathNo === 0;
 
+        let suggestedValidDirection: Direction = null;
+        let isCharacterValid: boolean = true;
+        // In case of a valid direction with a valid future position, we extract the only valid direction and take the character validation check
+        if (validDirectionsPathNo === 1 && !isAFakeTurn) {
+            suggestedValidDirection = POSSIBLE_DIRECTIONS.filter((d: Direction) => directionsValidationData[d as string].isValid)[0];
+            isCharacterValid = directionsValidationData[suggestedValidDirection as string].isCharacterValid;
+        }
+
         // We output the corresponding error or if there is no error, we set the potential direction as the next direction to use
         if (validDirectionsPathNo > 1) {
             const character: string = this.map[this.currentPosition.x][this.currentPosition.y];
@@ -163,8 +174,10 @@ export class PathDirection {
             this.error = 'Fake turn';
         } else if (validDirectionsPathNo === 0) {
             this.error = 'Broken path';
+        } else if (!isCharacterValid) {
+            this.error = 'Invalid character found';
         } else {
-            this.nextDirection = ['up', 'down', 'right', 'left'].filter((d: string) => directionsValidationData[d].isValid)[0] as Direction;
+            this.nextDirection = suggestedValidDirection;
         }
     }
 }
@@ -220,11 +233,7 @@ export class PathFinder {
         if (endCharacterMetadata.occurrencesNo === 0) {
             this.error = 'Missing end character';
             return { error: this.error } as IPathFinderOutputData;
-        } /*else if (endCharacterMetadata.occurrencesNo > 1) {
-            // This was added to differentiate path forking in case of a single end as well
-            this.error = 'Multiple ends';
-            return { error: this.error } as IPathFinderOutputData;
-        }*/
+        }
 
         let position: IPosition = { x: startCharacterMetadata.x, y: startCharacterMetadata.y };
         let previousPosition: IPosition = { x: -1, y: -1 };

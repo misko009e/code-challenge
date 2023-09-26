@@ -35,6 +35,7 @@ export interface IMatrixPositionMap {
 export interface IDirectionValidationData {
     isValid: boolean;
     isFakeTurn: boolean;
+    isCharacterValid: boolean;
 }
 
 export interface IDirectionsValidationData {
