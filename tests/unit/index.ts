@@ -1,4 +1,4 @@
-import { PathFinderHelperTests } from './path-finder-helper/path-finder-helper.class.tests';
+import { PathFinderHelperTests } from './path-finder-helper';
 
 const pathFinderHelperTests: PathFinderHelperTests = new PathFinderHelperTests();
 pathFinderHelperTests.runAllTests();
