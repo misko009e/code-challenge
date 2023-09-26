@@ -1,4 +1,4 @@
-import { Error } from './common';
+import { Error } from './common/common';
 
 export interface IPathFinderInputData {
     nodes: string[][];

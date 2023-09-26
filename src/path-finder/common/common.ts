@@ -1,4 +1,4 @@
-import { ILettersMap } from './path-finder.model';
+import { ILettersMap } from '../path-finder.model';
 
 export const START_CHARACTER: string = '@';
 

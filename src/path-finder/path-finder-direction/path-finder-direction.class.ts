@@ -1,7 +1,6 @@
 import { PathFinderHelper } from '../path-finder-helper';
-import { Direction, Error, START_CHARACTER } from '../common';
+import { Direction, Error, POSSIBLE_DIRECTIONS, START_CHARACTER } from '../common';
 import { IDirectionsValidationData, IPosition } from '../path-finder.model';
-import { POSSIBLE_DIRECTIONS } from '../const';
 
 export class PathFinderDirection {
     public nextDirection: Direction = null;
