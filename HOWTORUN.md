@@ -6,6 +6,10 @@ In order to run the main script program, please position yourself in the code-ch
 
 ```npx ts-node src/index.ts```
 
+In order to run automated unit tests type the following command:
+
+```npx ts-node tests/unit/index.ts```
+
 In order to run automated integration tests type the following command:
 
-```npx ts-node tests/index.ts```
+```npx ts-node tests/integration/index.ts```
