@@ -132,9 +132,6 @@ export class PathDirection {
     }
 
     protected determineNextDirection(): void {
-        /*console.log('[PathDirection] Current Position:', this.currentPosition);
-        console.log('[PathDirection] Previous position:', this.previousPosition);
-        console.log('[PathDirection] Previous direction:', this.previousDirection);*/
         let directionsValidationData: IDirectionsValidationData = {};
         POSSIBLE_DIRECTIONS.forEach((potentialDirection: Direction) => {
             directionsValidationData[potentialDirection as string] =
@@ -240,6 +237,7 @@ export class PathFinder {
             return { error: this.error } as IPathFinderOutputData;
         }
 
+        // We prepare the initial algorithm state of the used variables
         let isPathFinished: boolean = false;
         let position: IPosition = { x: startCharacterMetadata.x, y: startCharacterMetadata.y };
         let previousPosition: IPosition = { x: -1, y: -1 };
@@ -250,8 +248,6 @@ export class PathFinder {
         this.visitedPathPositions[`${position.x},${position.y}`] = true;
 
         while (!isPathFinished) {
-            /*console.log('*********************************************************************');
-            console.log('Path: ', this.path.join(''));*/
             if (!direction) {
                 let pathDirection: PathDirection = new PathDirection(this.map, position, previousPosition, previousDirection);
                 if (!!pathDirection.error) {
@@ -260,9 +256,7 @@ export class PathFinder {
                 }
                 direction = pathDirection.nextDirection;
             }
-            // console.log('Direction: ', direction);
             previousPosition = { ...position };
-            // console.log('Previous Position: ', direction);
             previousDirection = direction;
 
             const pathPosition: PathPosition = new PathPosition(this.map, position, direction);
@@ -274,10 +268,8 @@ export class PathFinder {
             // console.log(`Position: ${position.x}, ${position.y}`);
 
             character = this.map[position.x][position.y];
-            /*console.log('Character: ', character);
-            console.log('*********************************************************************');*/
+            // If we encountered an intersection or a character is at an intersection, we nullify direction so it can be recalculated
             if (LETTER_CHARACTERS[character]) {
-                // A check for weather or not is this an intersection
                 const nextPotentialPosition: IPosition = PathFinderHelper.getNextDirectionPosition(position, direction);
                 const isNextCharacterValid: boolean = PathFinderHelper.doesAnyCharacterExist(this.map, nextPotentialPosition.x, nextPotentialPosition.y);
                 if (!isNextCharacterValid) {
