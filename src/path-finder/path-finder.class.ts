@@ -36,6 +36,13 @@ export class PathFinder {
         }
 
         if (!this.error) {
+            /* IMPORTANT NOTE: Even though the task description says jagged matrices are allowed,
+            * due to the fact that there was no logic described around how to parse the jagged matrix,
+            * and which formats are allowed, I have set this case as an error, and have
+            * implemented the logic around matrices whose rows have an equal number of columns.*/
+            /* POTENTIAL SOLUTION: If necessary, we could add logic which parses the jagged matrix into
+            * the format used in the algorithm prior to running the algorithm, but I would need to know
+            * which parsing logic is expected, since this was described ambiguously with no example. */
             const { columns} = PathFinderHelper.determineMatrixSize(this.map) as IMatrixData;
             this.map.forEach((rowData: string[]) => {
                 if (rowData.length !== columns) {
