@@ -31,7 +31,7 @@ export class PathFinder {
     protected verifyEdgeCasesAndFindStartingPosition(): ICharacterMetadata {
         let startCharacterMetadata: ICharacterMetadata = { x: -1, y: -1, occurrencesNo: -1};
 
-        if (this.map.length === 0) {
+        if (this.map.length === 0 || this.map[0].length === 0) {
             this.error = 'No data';
         }
 

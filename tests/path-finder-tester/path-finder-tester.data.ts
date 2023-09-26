@@ -95,8 +95,16 @@ export const testCases: IPathFinderTestCase[] = [
     },
     {
         shouldBeCorrect: false,
-        name: 'Empty map',
+        name: 'No data',
         inputData: [],
+        error: 'No data'
+    },
+    {
+        shouldBeCorrect: false,
+        name: 'No data #2',
+        inputData: [
+            []
+        ],
         error: 'No data'
     },
     {
