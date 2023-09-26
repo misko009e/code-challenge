@@ -101,12 +101,18 @@ export class PathFinderHelper {
                                              previousPosition: IPosition,
                                              previousDirection: Direction,
                                              nextPotentialDirection: Direction): IDirectionValidationData {
+        // We find a position which should represent the next move using the suggested direction
         const nextPotentialPosition: IPosition = PathFinderHelper.getNextDirectionPosition(currentPosition, nextPotentialDirection);
-        const isUpMovementValid: boolean =
-            PathFinderHelper.doesAnyCharacterExist(map, nextPotentialPosition.x, nextPotentialPosition.y)
-            && PathFinderHelper.areDifferentPositions(previousPosition, nextPotentialPosition);
-        const isValid: boolean = isUpMovementValid && PathFinderHelper.isDifferentDirection(previousDirection, nextPotentialDirection);
-        const isFakeTurn: boolean = isUpMovementValid && !PathFinderHelper.isDifferentDirection(previousDirection, nextPotentialDirection);
+        // We verify that there is an actual character (not necessarily valid) on the suggested position
+        const isAnExistingCharacter: boolean = PathFinderHelper.doesAnyCharacterExist(map, nextPotentialPosition.x, nextPotentialPosition.y);
+        // We verify that we are not backtracking
+        const isDifferentPositionThanPrevious: boolean = PathFinderHelper.areDifferentPositions(previousPosition, nextPotentialPosition);
+        // We verify that we are not making a fake turn
+        const isDifferentDirectionThanPrevious: boolean = PathFinderHelper.isDifferentDirection(previousDirection, nextPotentialDirection);
+        // We calculate is the position valid, meaning a position with an actual character within map bounds that is not a fake turn
+        const isValid: boolean = isAnExistingCharacter && isDifferentPositionThanPrevious && isDifferentDirectionThanPrevious;
+        // We calculate is the position a fake turn based on the calculated parameters
+        const isFakeTurn: boolean = isAnExistingCharacter && isDifferentPositionThanPrevious && !isDifferentDirectionThanPrevious;
         return { isValid, isFakeTurn } as IDirectionValidationData;
     }
 }
