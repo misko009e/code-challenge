@@ -12,7 +12,7 @@ import { IPathFinderTestCase } from './path-finder-tester.model';
 ]
 */
 
-export const testCases: IPathFinderTestCase[] = [
+export const integrationTestCases: IPathFinderTestCase[] = [
     {
         shouldBeCorrect: true,
         name: 'A basic example',

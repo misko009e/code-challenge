@@ -11,5 +11,7 @@ export class PathFinderDirectionTests extends PathFinderDirection {
         super(map, currentPosition, previousPosition, previousDirection);
     }
 
-    // TODO: Implement unit tests for direction class
+    public testDetermineNextDirection = () => {
+        this.determineNextDirection();
+    }
 }

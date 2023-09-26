@@ -1,12 +1,13 @@
 import { IPathFinderTestCase } from './path-finder-tester.model';
 import { IPathFinderInputData, IPathFinderOutputData, PathFinder } from '../../../src/path-finder';
+import {integrationTestCases} from "./path-finder-tester.data";
 
 export class PathFinderTester {
-    constructor(private testCases: IPathFinderTestCase[]) {}
+    constructor(private integrationTestCases: IPathFinderTestCase[]) {}
 
     public runTests(): void {
         let successfulTestsCounter: number = 0;
-        this.testCases.forEach((testCase: IPathFinderTestCase, index: number) => {
+        this.integrationTestCases.forEach((testCase: IPathFinderTestCase, index: number) => {
             console.log('*********************************************************************');
             console.log(`Running test case #${index+1}: ${testCase.name}`);
             const INPUT_DATA: IPathFinderInputData = {
@@ -33,7 +34,7 @@ export class PathFinderTester {
                 }
             }
         });
-        console.log(`Successfully ran ${successfulTestsCounter}/${this.testCases.length}`);
+        console.log(`Successfully ran ${successfulTestsCounter}/${this.integrationTestCases.length}`);
         console.log('*********************************************************************');
     }
 }
