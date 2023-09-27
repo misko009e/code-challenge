@@ -8,7 +8,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['x', '-', 'B', '-', '@', '-', 'A', '-', 'x'],
         ],
         currentPosition: { x: 0, y: 4 },
-        previousPosition: { x: -1, y: -1 },
         previousDirection: null,
         error: 'Multiple starting paths'
     },
@@ -25,7 +24,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['', '', '', '', '-', '-', '-', '+'],
         ],
         currentPosition: { x: 2, y: 7 },
-        previousPosition: { x: -2, y: 6 },
         previousDirection: 'right',
         error: 'Fork in path'
     },
@@ -36,7 +34,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['@', '-', 'A', '-', '+', '-', 'B', '-', 'x'],
         ],
         currentPosition: { x: 0, y: 4 },
-        previousPosition: { x: 0, y: 3 },
         previousDirection: 'right',
         error: 'Fake turn'
     },
@@ -50,7 +47,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['', '', '', '', '', 'B', '-', 'x'],
         ],
         currentPosition: { x: 1, y: 5 },
-        previousPosition: { x: 0, y: 5 },
         previousDirection: 'down',
         error: 'Broken path'
     },
@@ -64,7 +60,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['', '', '', '', '', 'B', '-', 'x'],
         ],
         currentPosition: { x: 0, y: 5 },
-        previousPosition: { x: 0, y: 4 },
         previousDirection: 'right',
         error: 'Invalid character found'
     },
@@ -79,7 +74,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['', '', '7', '2', 'x'],
         ],
         currentPosition: { x: 0, y: 2 },
-        previousPosition: { x: 0, y: 1 },
         previousDirection: 'right',
         error: 'Invalid character found'
     },
@@ -93,7 +87,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['@', '-', '-', 'A', '-', '+', '', ''],
         ],
         currentPosition: { x: 3, y: 5 },
-        previousPosition: { x: 3, y: 4 },
         previousDirection: 'right',
         outputDirection: 'up'
     },
@@ -107,7 +100,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['', '+', '-', 'A', '-', '+', 'B', ''],
         ],
         currentPosition: { x: 3, y: 6 },
-        previousPosition: { x: 3, y: 7 },
         previousDirection: 'left',
         outputDirection: 'up'
     },
@@ -121,7 +113,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['', '', '', '', '', 'B', '-', 'x'],
         ],
         currentPosition: { x: 0, y: 5 },
-        previousPosition: { x: 0, y: 4 },
         previousDirection: 'right',
         outputDirection: 'down'
     },
@@ -135,7 +126,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['', '', '', '', '', 'C', '-', 'x'],
         ],
         currentPosition: { x: 2, y: 0 },
-        previousPosition: { x: 1, y: 0 },
         previousDirection: 'down',
         outputDirection: 'right'
     },
@@ -149,7 +139,6 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
             ['', '+', '-', 'A', '', 'x', 'B', ''],
         ],
         currentPosition: { x: 3, y: 6 },
-        previousPosition: { x: 2, y: 6 },
         previousDirection: 'down',
         outputDirection: 'left'
     },

@@ -8,7 +8,6 @@ export class PathFinderDirection {
 
     constructor(protected map: string[][],
                 protected currentPosition: IPosition,
-                protected previousPosition: IPosition,
                 protected previousDirection: Direction) {
         this.determineNextDirection();
     }
@@ -26,7 +25,7 @@ export class PathFinderDirection {
         let validDirectionsPathNo: number = 0;
         possibleDirections.forEach((potentialDirection: Direction) => {
             directionsValidationData[potentialDirection as string] =
-                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, potentialDirection);
+                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, potentialDirection);
             if (directionsValidationData[potentialDirection as string].isCharacterValid) {
                 validDirectionsPathNo++;
             }
@@ -38,7 +37,7 @@ export class PathFinderDirection {
                 possibleDirections.filter((d: Direction) => directionsValidationData[d as string].isAnExistingCharacter).length > 0;
             // We check to see if there is a fake turn position straight in front of the intersection
             const fakeDirectionPosition: IDirectionValidationData =
-                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, fakeTurnDirection);
+                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, fakeTurnDirection);
 
             if (doInvalidCharactersExist) {
                 this.error = 'Invalid character found';

@@ -5,7 +5,6 @@ export interface IPathFinderDirectionUnitTestCase  {
     name: string;
     map: string[][];
     currentPosition: IPosition;
-    previousPosition: IPosition;
     previousDirection: Direction;
     outputDirection?: Direction;
     error?: Error;

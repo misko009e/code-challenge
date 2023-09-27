@@ -5,10 +5,9 @@ export class PathFinderDirectionTests extends PathFinderDirection {
     constructor(
         protected map: string[][],
         protected currentPosition: IPosition,
-        protected previousPosition: IPosition,
         protected previousDirection: Direction,
     ) {
-        super(map, currentPosition, previousPosition, previousDirection);
+        super(map, currentPosition, previousDirection);
     }
 
     public testDetermineNextDirection = () => {

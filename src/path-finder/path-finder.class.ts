@@ -79,7 +79,6 @@ export class PathFinder {
         // We prepare the initial algorithm state of the used variables
         let isPathFinished: boolean = false;
         let position: IPosition = { x: startCharacterMetadata.x, y: startCharacterMetadata.y };
-        let previousPosition: IPosition = { x: -1, y: -1 };
         let direction: Direction = null;
         let previousDirection: Direction = null;
         let character: string = this.map[position.x][position.y];
@@ -88,14 +87,13 @@ export class PathFinder {
 
         while (!isPathFinished) {
             if (!direction) {
-                let pathDirection: PathFinderDirection = new PathFinderDirection(this.map, position, previousPosition, previousDirection);
+                let pathDirection: PathFinderDirection = new PathFinderDirection(this.map, position, previousDirection);
                 if (!!pathDirection.error) {
                     this.error = pathDirection.error;
                     return { error: this.error } as IPathFinderOutputData;
                 }
                 direction = pathDirection.nextDirection;
             }
-            previousPosition = { ...position };
             previousDirection = direction;
 
             const pathPosition: PathFinderPosition = new PathFinderPosition(this.map, position, direction);

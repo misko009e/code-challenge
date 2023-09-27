@@ -74,8 +74,6 @@ export class PathFinderHelper {
 
     public static validatePotentialDirection(map: string[][],
                                              currentPosition: IPosition,
-                                             previousPosition: IPosition,
-                                             previousDirection: Direction,
                                              nextPotentialDirection: Direction): IDirectionValidationData {
         // We find a position which should represent the next move using the suggested direction
         const nextPotentialPosition: IPosition = PathFinderHelper.getNextDirectionPosition(currentPosition, nextPotentialDirection);

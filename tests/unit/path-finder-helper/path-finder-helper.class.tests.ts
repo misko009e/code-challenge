@@ -184,12 +184,10 @@ export class PathFinderHelperTests {
             ['x', '-', 'B']
         ];
         const currentPosition: IPosition = { x: 0, y: 2 };
-        const previousPosition: IPosition = { x: 0, y: 1 };
-        const previousDirection: Direction = 'right';
         const nextPotentialDirection: Direction = 'down';
 
         const directionValidationData: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(map, currentPosition, previousPosition, previousDirection, nextPotentialDirection);
+            PathFinderHelper.validatePotentialDirection(map, currentPosition, nextPotentialDirection);
         if (!directionValidationData.isCharacterValid) {
             throw new Error('The function did not return a valid character.');
         }
@@ -200,7 +198,7 @@ export class PathFinderHelperTests {
             ['x', '-', '2']
         ];
         const directionValidationDataInvalidCharacter: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(invalidCharacterMap, currentPosition, previousPosition, previousDirection, nextPotentialDirection);
+            PathFinderHelper.validatePotentialDirection(invalidCharacterMap, currentPosition, nextPotentialDirection);
         if (!directionValidationDataInvalidCharacter.isAnExistingCharacter) {
             throw new Error('The function returned a valid direction, even though the direction is off the map.');
         }
@@ -208,7 +206,7 @@ export class PathFinderHelperTests {
         // Test case 3: Non-existing character (off the map).
         const nextPotentialDirectionOutOfBounds: Direction = 'up';
         const directionValidationDataOutOfBounds: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(map, currentPosition, previousPosition, previousDirection, nextPotentialDirectionOutOfBounds);
+            PathFinderHelper.validatePotentialDirection(map, currentPosition, nextPotentialDirectionOutOfBounds);
         if (directionValidationDataOutOfBounds.isAnExistingCharacter) {
             throw new Error('The function returned a valid direction, even though the direction is off the map.');
         }
