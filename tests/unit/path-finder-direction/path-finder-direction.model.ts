@@ -7,5 +7,6 @@ export interface IPathFinderDirectionUnitTestCase  {
     currentPosition: IPosition;
     previousPosition: IPosition;
     previousDirection: Direction;
+    outputDirection?: Direction;
     error?: Error;
 }

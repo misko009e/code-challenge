@@ -17,12 +17,19 @@ pathFinderDirectionTestCases.forEach((testCase: IPathFinderDirectionUnitTestCase
         new PathFinderDirectionTests(testCase.map, testCase.currentPosition, testCase.previousPosition, testCase.previousDirection);
     pathFinderDirectionTests.testDetermineNextDirection();
     if (testCase.shouldBeCorrect) {
-        successfulTestsCounter++;
+        const isDirectionOutputCorrect: boolean = testCase.outputDirection === pathFinderDirectionTests.nextDirection;
+        console.log(`Direction comparison (expected === actual): "${testCase.outputDirection}" === "${pathFinderDirectionTests.nextDirection}"`);
+        console.log(`Direction output: ${ isDirectionOutputCorrect ? 'Correct' : 'Incorrect' }`);
+        if (isDirectionOutputCorrect) {
+            successfulTestsCounter++;
+        }
     } else {
         const isThrownErrorCorrect: boolean = testCase.error === pathFinderDirectionTests.error;
         console.log(`Error comparison (expected === actual): "${testCase.error}" === "${pathFinderDirectionTests.error}"`);
         console.log(`Error output: ${ isThrownErrorCorrect ? 'Correct' : 'Incorrect' }`);
-        successfulTestsCounter++;
+        if (isThrownErrorCorrect) {
+            successfulTestsCounter++;
+        }
     }
 });
 console.log(`[PathFinderDirection] Successfully ran ${successfulTestsCounter}/${pathFinderDirectionTestCases.length}`);
