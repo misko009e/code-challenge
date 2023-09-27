@@ -1,5 +1,5 @@
 import { ICharacterMetadata, IDirectionValidationData, IMatrixData, IPosition } from '../path-finder.model';
-import {Direction, EMPTY_SPACE_CHARACTER, VALID_CHARACTERS} from '../common';
+import { Direction, EMPTY_SPACE_CHARACTER, VALID_CHARACTERS } from '../common';
 
 export class PathFinderHelper {
     public static determineMatrixSize(map: string[][]): IMatrixData {

@@ -293,4 +293,16 @@ export const integrationTestCases: IPathFinderTestCase[] = [
         ],
         error: 'Invalid character found'
     },
+    {
+        shouldBeCorrect: true,
+        name: 'Go through to the end ignoring the rest',
+        inputData: [
+            ['@', '+', '', '+', '-', '-', '+', ''],
+            ['', '|', '', '|', '', '', '|', ''],
+            ['', '|', '', '|', '', 'x', '|', ''],
+            ['', '+', '-', 'A', '-', '+', 'B', ''],
+        ],
+        lettersOutput: 'A',
+        pathOutput: '@+||+-A-+x'
+    },
 ];
