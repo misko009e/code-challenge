@@ -1,5 +1,5 @@
 import { ICharacterMetadata, IDirectionValidationData, IMatrixData, IPosition } from '../path-finder.model';
-import { Direction, EMPTY_SPACE_CHARACTER, VALID_CHARACTERS } from '../common';
+import {Direction, EMPTY_SPACE_CHARACTER, VALID_CHARACTERS} from '../common';
 
 export class PathFinderHelper {
     public static determineMatrixSize(map: string[][]): IMatrixData {
@@ -72,14 +72,6 @@ export class PathFinderHelper {
         return nextPotentialPosition;
     }
 
-    public static areDifferentPositions(firstPosition: IPosition, secondPosition: IPosition): boolean {
-        return firstPosition.x !== secondPosition.x || firstPosition.y !== secondPosition.y;
-    }
-
-    public static isDifferentDirection(firstDirection: Direction, secondDirection: Direction): boolean {
-        return firstDirection !== secondDirection;
-    }
-
     public static validatePotentialDirection(map: string[][],
                                              currentPosition: IPosition,
                                              previousPosition: IPosition,
@@ -89,15 +81,8 @@ export class PathFinderHelper {
         const nextPotentialPosition: IPosition = PathFinderHelper.getNextDirectionPosition(currentPosition, nextPotentialDirection);
         // We verify that there is an actual character (not necessarily valid) on the suggested position
         const isAnExistingCharacter: boolean = PathFinderHelper.doesAnyCharacterExist(map, nextPotentialPosition.x, nextPotentialPosition.y);
-        // We verify that we are not backtracking
-        const isDifferentPositionThanPrevious: boolean = PathFinderHelper.areDifferentPositions(previousPosition, nextPotentialPosition);
-        // We verify that we are not making a fake turn
-        const isDifferentDirectionThanPrevious: boolean = PathFinderHelper.isDifferentDirection(previousDirection, nextPotentialDirection);
-        // We calculate is the position valid, meaning a position with an actual character within map bounds that is not a fake turn
-        const isValid: boolean = isAnExistingCharacter && isDifferentPositionThanPrevious && isDifferentDirectionThanPrevious;
-        // We calculate is the position a fake turn based on the calculated parameters
-        const isFakeTurn: boolean = isAnExistingCharacter && isDifferentPositionThanPrevious && !isDifferentDirectionThanPrevious;
+        // We check if the character is valid
         const isCharacterValid: boolean = PathFinderHelper.isCharacterValid(map, nextPotentialPosition.x, nextPotentialPosition.y);
-        return { isValid, isFakeTurn, isCharacterValid } as IDirectionValidationData;
+        return { isAnExistingCharacter, isCharacterValid } as IDirectionValidationData;
     }
 }

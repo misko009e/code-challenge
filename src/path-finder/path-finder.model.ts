@@ -1,4 +1,4 @@
-import { Error } from './common/common';
+import { Error } from './common';
 
 export interface IPathFinderInputData {
     nodes: string[][];
@@ -33,8 +33,7 @@ export interface IMatrixPositionMap {
 }
 
 export interface IDirectionValidationData {
-    isValid: boolean;
-    isFakeTurn: boolean;
+    isAnExistingCharacter: boolean;
     isCharacterValid: boolean;
 }
 

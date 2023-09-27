@@ -251,6 +251,18 @@ export const integrationTestCases: IPathFinderTestCase[] = [
     },
     {
         shouldBeCorrect: false,
+        name: 'Invalid character found #2',
+        inputData: [
+            ['@', '1', '%', '', ''],
+            ['', '', '3', '', ''],
+            ['', '', '5', '', ''],
+            ['', '', '1', '', ''],
+            ['', '', '7', '2', 'x'],
+        ],
+        error: 'Invalid character found'
+    },
+    {
+        shouldBeCorrect: false,
         name: 'Fake turn',
         inputData: [
             ['@', '-', 'A', '-', '+', '-', 'B', '-', 'x'],
@@ -282,27 +294,27 @@ export const integrationTestCases: IPathFinderTestCase[] = [
         error: 'Missing start character'
     },
     {
-        shouldBeCorrect: false,
-        name: 'Only invalid characters used but with valid start and end',
-        inputData: [
-            ['@', '1', '%', '', ''],
-            ['', '', '3', '', ''],
-            ['', '', '5', '', ''],
-            ['', '', '1', '', ''],
-            ['', '', '7', '2', 'x'],
-        ],
-        error: 'Invalid character found'
-    },
-    {
         shouldBeCorrect: true,
-        name: 'Go through to the end ignoring the rest',
+        name: 'Go through to the end after "-" on last intersection',
         inputData: [
             ['@', '+', '', '+', '-', '-', '+', ''],
             ['', '|', '', '|', '', '', '|', ''],
-            ['', '|', '', '|', '', 'x', '|', ''],
-            ['', '+', '-', 'A', '-', '+', 'B', ''],
+            ['', '|', '', '|', '', 'x', 'B', ''],
+            ['', '+', 'A', '+', '-', '+', '+', ''],
         ],
-        lettersOutput: 'A',
-        pathOutput: '@+||+-A-+x'
+        lettersOutput: 'AB',
+        pathOutput: '@+||+A+||+--+|B++x'
+    },
+    {
+        shouldBeCorrect: true,
+        name: 'Go through to the end ignoring the "+" on last intersection',
+        inputData: [
+            ['@', '+', '', '+', '-', '-', '+', ''],
+            ['', '|', '', '|', '', '', '|', ''],
+            ['', '|', '', '|', '', 'x', 'B', ''],
+            ['', '+', 'A', '+', '+', '+', '+', ''],
+        ],
+        lettersOutput: 'AB',
+        pathOutput: '@+||+A+||+--+|B++x'
     },
 ];

@@ -69,6 +69,21 @@ export const pathFinderDirectionTestCases: IPathFinderDirectionUnitTestCase[] = 
         error: 'Invalid character found'
     },
     {
+        shouldBeCorrect: false,
+        name: 'Invalid character found #2',
+        map: [
+            ['@', '1', '%', '', ''],
+            ['', '', '3', '', ''],
+            ['', '', '5', '', ''],
+            ['', '', '1', '', ''],
+            ['', '', '7', '2', 'x'],
+        ],
+        currentPosition: { x: 0, y: 2 },
+        previousPosition: { x: 0, y: 1 },
+        previousDirection: 'right',
+        error: 'Invalid character found'
+    },
+    {
         shouldBeCorrect: true,
         name: 'Successful up turn',
         map: [

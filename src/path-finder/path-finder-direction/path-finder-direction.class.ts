@@ -1,6 +1,6 @@
 import { PathFinderHelper } from '../path-finder-helper';
 import { Direction, Error, POSSIBLE_DIRECTIONS, START_CHARACTER } from '../common';
-import { IDirectionsValidationData, IPosition } from '../path-finder.model';
+import { IDirectionsValidationData, IDirectionValidationData, IPosition } from '../path-finder.model';
 
 export class PathFinderDirection {
     public nextDirection: Direction = null;
@@ -15,48 +15,46 @@ export class PathFinderDirection {
 
     protected determineNextDirection(): void {
         let directionsValidationData: IDirectionsValidationData = {};
-        POSSIBLE_DIRECTIONS.forEach((potentialDirection: Direction) => {
-            directionsValidationData[potentialDirection as string] =
-                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, potentialDirection);
-        });
-
-        // We calculate how many valid directions there are to determine if the path is broken or we have a fork in path
-        const validDirectionsPathNo: number = [
-            directionsValidationData['up'].isValid,
-            directionsValidationData['down'].isValid,
-            directionsValidationData['right'].isValid,
-            directionsValidationData['left'].isValid,
-        ].filter((isDirectionValid: boolean) => isDirectionValid).length;
-        // We check if there is no other potential directions other than the fake turn direction
-        const isAFakeTurn: boolean =
-            (directionsValidationData['up'].isFakeTurn
-                || directionsValidationData['down'].isFakeTurn
-                || directionsValidationData['right'].isFakeTurn
-                || directionsValidationData['left'].isFakeTurn)
-            && validDirectionsPathNo === 0;
-
-        let suggestedValidDirection: Direction = null;
-        let isCharacterValid: boolean = true;
-        // In case of a valid direction with a valid future position, we extract the only valid direction and take the character validation check
-        if (validDirectionsPathNo === 1 && !isAFakeTurn) {
-            suggestedValidDirection = POSSIBLE_DIRECTIONS.filter((d: Direction) => directionsValidationData[d as string].isValid)[0];
-            isCharacterValid = directionsValidationData[suggestedValidDirection as string].isCharacterValid;
+        let possibleDirections: Direction[] = POSSIBLE_DIRECTIONS;
+        const fakeTurnDirection: Direction = this.previousDirection;
+        if (this.previousDirection === 'up' || this.previousDirection === 'down') {
+            possibleDirections = ['left', 'right'];
+        } else if (this.previousDirection === 'right' || this.previousDirection === 'left') {
+            possibleDirections = ['up', 'down'];
         }
 
-        // We output the corresponding error or if there is no error, we set the potential direction as the next direction to use
-        if (validDirectionsPathNo > 1) {
+        let validDirectionsPathNo: number = 0;
+        possibleDirections.forEach((potentialDirection: Direction) => {
+            directionsValidationData[potentialDirection as string] =
+                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, potentialDirection);
+            if (directionsValidationData[potentialDirection as string].isCharacterValid) {
+                validDirectionsPathNo++;
+            }
+        });
+
+        if (validDirectionsPathNo === 0) {
+            // We check to see if there are any existing characters that are not valid, like numbers for example, otherwise the path is broken
+            const doInvalidCharactersExist: boolean =
+                possibleDirections.filter((d: Direction) => directionsValidationData[d as string].isAnExistingCharacter).length > 0;
+            // We check to see if there is a fake turn position straight in front of the intersection
+            const fakeDirectionPosition: IDirectionValidationData =
+                PathFinderHelper.validatePotentialDirection(this.map, this.currentPosition, this.previousPosition, this.previousDirection, fakeTurnDirection);
+
+            if (doInvalidCharactersExist) {
+                this.error = 'Invalid character found';
+            } else if (fakeDirectionPosition.isAnExistingCharacter) {
+                this.error = 'Fake turn';
+            } else {
+                this.error = 'Broken path';
+            }
+        } else if (validDirectionsPathNo === 1) {
+            // If there is only a single valid direction, return it
+            this.nextDirection = possibleDirections.filter((d: Direction) => directionsValidationData[d as string].isCharacterValid)[0];
+        } else if (validDirectionsPathNo === 2) {
+            // In case of 2 possible directions, determine the error depending on if it is in the starting character positions
             const character: string = this.map[this.currentPosition.x][this.currentPosition.y];
             const isAStartingCharacter: boolean = character === START_CHARACTER;
             this.error = isAStartingCharacter ? 'Multiple starting paths' : 'Fork in path';
-        } else if (isAFakeTurn) {
-            // Fake turn can be considered a sub-case of "Broken path" error down below, which is why we check for it before the next if
-            this.error = 'Fake turn';
-        } else if (validDirectionsPathNo === 0) {
-            this.error = 'Broken path';
-        } else if (!isCharacterValid) {
-            this.error = 'Invalid character found';
-        } else {
-            this.nextDirection = suggestedValidDirection;
         }
     }
 }

@@ -1,4 +1,4 @@
-import { PathFinderHelperTests } from './path-finder-helper';
+import {IPathFinderHelperTestsResult, PathFinderHelperTests} from './path-finder-helper';
 import {
     IPathFinderDirectionUnitTestCase,
     pathFinderDirectionTestCases,
@@ -7,9 +7,10 @@ import {
 
 // TODO: Move the PathFinderHelper unit tests to a data config file
 const pathFinderHelperTests: PathFinderHelperTests = new PathFinderHelperTests();
-pathFinderHelperTests.runAllTests();
+let pathFinderHelperTestResults: IPathFinderHelperTestsResult = pathFinderHelperTests.runAllTests();
+console.log(`[PathFinderHelper] Successfully ran ${pathFinderHelperTestResults.successfulTestsCount}/${pathFinderHelperTestResults.totalTestsCount}`);
 
-let successfulTestsCounter: number = 0;
+let successfulTestsCounter = 0;
 pathFinderDirectionTestCases.forEach((testCase: IPathFinderDirectionUnitTestCase, index: number) => {
     console.log('*********************************************************************');
     console.log(`Testing PathFinderDirection [testDetermineNextDirection]: #${index+1}: ${testCase.name}`);

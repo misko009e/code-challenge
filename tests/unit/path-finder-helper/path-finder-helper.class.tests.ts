@@ -6,6 +6,7 @@ import {
     IMatrixData,
     IPosition
 } from '../../../src/path-finder';
+import {IPathFinderHelperTestsResult} from "./path-finder-helper.model";
 
 export class PathFinderHelperTests {
     public testDetermineMatrixSize = () => {
@@ -176,44 +177,8 @@ export class PathFinderHelperTests {
         }
     }
 
-    public testAreDifferentPositions = () => {
-        // Test case 1: Positions are different.
-        const firstPosition: IPosition = { x: 0, y: 0 };
-        const secondPosition: IPosition = { x: 1, y: 1 };
-        const areDifferentPositions: boolean = PathFinderHelper.areDifferentPositions(firstPosition, secondPosition);
-        if (!areDifferentPositions) {
-            throw new Error('The function did not return true, even though the positions are different.');
-        }
-
-        // Test case 2: Positions are the same.
-        const firstPositionSame: IPosition = { x: 0, y: 0 };
-        const secondPositionSame: IPosition = { x: 0, y: 0 };
-        const areDifferentPositionsSame: boolean = PathFinderHelper.areDifferentPositions(firstPositionSame, secondPositionSame);
-        if (areDifferentPositionsSame) {
-            throw new Error('The function returned true, even though the positions are the same.');
-        }
-    }
-
-    public testIsDifferentDirection = () => {
-        // Test case 1: Directions are different.
-        const firstDirection: Direction = 'up';
-        const secondDirection: Direction = 'down';
-        const isDifferentDirection: boolean = PathFinderHelper.isDifferentDirection(firstDirection, secondDirection);
-        if (!isDifferentDirection) {
-            throw new Error('The function did not return true, even though the directions are different.');
-        }
-
-        // Test case 2: Directions are the same.
-        const firstDirectionSame: Direction = 'up';
-        const secondDirectionSame: Direction = 'up';
-        const isDifferentDirectionSame: boolean = PathFinderHelper.isDifferentDirection(firstDirectionSame, secondDirectionSame);
-        if (isDifferentDirectionSame) {
-            throw new Error('The function returned true, even though the directions are the same.');
-        }
-    }
-
     public testValidatePotentialDirection = () => {
-        // Test case 1: Valid direction.
+        // Test case 1: Valid character on next position.
         const map: string[][] = [
             ['@', 'A', '+'],
             ['x', '-', 'B']
@@ -225,88 +190,52 @@ export class PathFinderHelperTests {
 
         const directionValidationData: IDirectionValidationData =
             PathFinderHelper.validatePotentialDirection(map, currentPosition, previousPosition, previousDirection, nextPotentialDirection);
-        if (!directionValidationData.isValid) {
-            throw new Error('The function did not return a valid direction.');
+        if (!directionValidationData.isCharacterValid) {
+            throw new Error('The function did not return a valid character.');
         }
 
-        // Test case 2: Invalid direction (off the map).
-        const nextPotentialDirectionOutOfBounds: Direction = 'up';
-        const directionValidationDataOutOfBounds: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(map, currentPosition, previousPosition, previousDirection, nextPotentialDirectionOutOfBounds);
-        if (directionValidationDataOutOfBounds.isValid) {
+        // Test case 2: Invalid character on next position.
+        const invalidCharacterMap: string[][] = [
+            ['@', 'A', '+'],
+            ['x', '-', '2']
+        ];
+        const directionValidationDataInvalidCharacter: IDirectionValidationData =
+            PathFinderHelper.validatePotentialDirection(invalidCharacterMap, currentPosition, previousPosition, previousDirection, nextPotentialDirection);
+        if (!directionValidationDataInvalidCharacter.isAnExistingCharacter) {
             throw new Error('The function returned a valid direction, even though the direction is off the map.');
         }
 
-        // Test case 3: Invalid direction (backtracking).
-        const nextPotentialDirectionBacktracking: Direction = 'left';
-        const directionValidationDataBacktracking: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(map, currentPosition, previousPosition, previousDirection, nextPotentialDirectionBacktracking);
-        if (directionValidationDataBacktracking.isValid) {
-            throw new Error('The function returned a valid direction, even though the direction is backtracking.');
-        }
-
-        // Test case 4: Invalid direction (fake turn).
-        const fakeTurnMap: string[][] = [
-            ['@', '-', 'A', '-', '+', '-', 'B', '-', 'x'],
-        ];
-        const fakeTurnPosition: IPosition = { x: 0, y: 4 };
-        const fakeTurnPreviousPosition: IPosition = { x: 0, y: 3 };
-        const nextPotentialDirectionFakeTurn: Direction = 'right';
-        const directionValidationDataFakeTurn: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(fakeTurnMap, fakeTurnPosition, fakeTurnPreviousPosition, previousDirection, nextPotentialDirectionFakeTurn);
-        if (!directionValidationDataFakeTurn.isFakeTurn) {
-            throw new Error('The function returned a valid direction, even though the direction is a fake turn.');
-        }
-
-        // Test case 5: Invalid direction (empty space).
-        const nextPotentialDirectionEmptySpace: Direction = 'right';
-        const emptySpaceMap: string[][] = [
-            ['@', 'A', ''],
-            ['x', '-', '-']
-        ];
-        const emptySpacePosition: IPosition = { x: 0, y: 1 };
-        const emptySpacePreviousPosition: IPosition = { x: 0, y: 0 };
-        const directionValidationDataEmptySpace: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(emptySpaceMap, emptySpacePosition, emptySpacePreviousPosition, previousDirection, nextPotentialDirectionEmptySpace);
-        if (directionValidationDataEmptySpace.isValid) {
-            throw new Error('The function returned a valid direction, even though the direction is to an empty space.');
-        }
-
-        // Test case 6: Invalid direction (invalid character).
-        const nextPotentialDirectionInvalidCharacter: Direction = 'right';
-        const invalidCharacterMap: string[][] = [
-            ['@', 'A', '1'],
-            ['x', '-', '-']
-        ];
-        const invalidCharacterPosition: IPosition = { x: 0, y: 1 };
-        const invalidCharacterPreviousPosition: IPosition = { x: 0, y: 0 };
-        const directionValidationDataInvalidCharacter: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(invalidCharacterMap, invalidCharacterPosition, invalidCharacterPreviousPosition, previousDirection, nextPotentialDirectionInvalidCharacter);
-        if (directionValidationDataInvalidCharacter.isValid) {
-            throw new Error('The function returned a valid direction, even though the direction is to an invalid character.');
+        // Test case 3: Non-existing character (off the map).
+        const nextPotentialDirectionOutOfBounds: Direction = 'up';
+        const directionValidationDataOutOfBounds: IDirectionValidationData =
+            PathFinderHelper.validatePotentialDirection(map, currentPosition, previousPosition, previousDirection, nextPotentialDirectionOutOfBounds);
+        if (directionValidationDataOutOfBounds.isAnExistingCharacter) {
+            throw new Error('The function returned a valid direction, even though the direction is off the map.');
         }
     }
 
-    public runTest(originalFunctionName: string, testFunction: Function): void {
+    public runTest(originalFunctionName: string, testFunction: Function): boolean {
         try {
             console.log('*********************************************************************');
             console.log(`Testing PathFinderHelperClass [${originalFunctionName}] ...`);
             testFunction();
             console.log(`[Success]: PathFinderHelperClass [${originalFunctionName}]`);
+            return true;
         } catch (e) {
             console.log(`[Error] PathFinderHelperClass [${originalFunctionName}]: `, e);
+            return false;
         }
     }
 
-    public runAllTests(): void {
-        this.runTest('determineMatrixSize', this.testDetermineMatrixSize);
-        this.runTest('determineCharacterPosition', this.testDetermineCharacterPosition);
-        this.runTest('isPositionWithinMapBounds', this.testIsPositionWithinMapBounds);
-        this.runTest('doesAnyCharacterExist', this.testDoesAnyCharacterExist);
-        this.runTest('isCharacterValid', this.testIsCharacterValid);
-        this.runTest('getNextDirectionPosition', this.testGetNextDirectionPosition);
-        this.runTest('areDifferentPositions', this.testAreDifferentPositions);
-        this.runTest('isDifferentDirection', this.testIsDifferentDirection);
-        this.runTest('validatePotentialDirection', this.testValidatePotentialDirection);
+    public runAllTests(): IPathFinderHelperTestsResult {
+        let successfulTestsCount: number = 0;
+        this.runTest('determineMatrixSize', this.testDetermineMatrixSize) ? successfulTestsCount++ : null;
+        this.runTest('determineCharacterPosition', this.testDetermineCharacterPosition) ? successfulTestsCount++ : null;
+        this.runTest('isPositionWithinMapBounds', this.testIsPositionWithinMapBounds) ? successfulTestsCount++ : null;
+        this.runTest('doesAnyCharacterExist', this.testDoesAnyCharacterExist) ? successfulTestsCount++ : null;
+        this.runTest('isCharacterValid', this.testIsCharacterValid) ? successfulTestsCount++ : null;
+        this.runTest('getNextDirectionPosition', this.testGetNextDirectionPosition) ? successfulTestsCount++ : null;
+        this.runTest('validatePotentialDirection', this.testValidatePotentialDirection) ? successfulTestsCount++ : null;
+        return { totalTestsCount: 7, successfulTestsCount} as IPathFinderHelperTestsResult;
     }
 }

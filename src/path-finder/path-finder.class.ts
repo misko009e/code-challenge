@@ -106,11 +106,11 @@ export class PathFinder {
             position = pathPosition.nextPosition;
 
             character = this.map[position.x][position.y];
-            // If we encountered an intersection or a character is at an intersection, we nullify direction so it can be recalculated
+            // If we encountered an intersection or if a character is at an intersection, we nullify direction so it can be recalculated
             if (LETTER_CHARACTERS[character]) {
                 const nextPotentialPosition: IPosition = PathFinderHelper.getNextDirectionPosition(position, direction);
-                const isNextCharacterValid: boolean = PathFinderHelper.doesAnyCharacterExist(this.map, nextPotentialPosition.x, nextPotentialPosition.y);
-                if (!isNextCharacterValid) {
+                const doesAnyCharacterExistOnNextPosition: boolean = PathFinderHelper.doesAnyCharacterExist(this.map, nextPotentialPosition.x, nextPotentialPosition.y);
+                if (!doesAnyCharacterExistOnNextPosition) {
                     direction = null;
                 }
                 // Only add those letters which were previously not added
