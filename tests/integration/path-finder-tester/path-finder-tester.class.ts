@@ -1,6 +1,5 @@
 import { IPathFinderTestCase } from './path-finder-tester.model';
 import { IPathFinderInputData, IPathFinderOutputData, PathFinder } from '../../../src/path-finder';
-import {integrationTestCases} from "./path-finder-tester.data";
 
 export class PathFinderTester {
     constructor(private integrationTestCases: IPathFinderTestCase[]) {}
@@ -34,7 +33,7 @@ export class PathFinderTester {
                 }
             }
         });
-        console.log(`Successfully ran ${successfulTestsCounter}/${this.integrationTestCases.length}`);
+        console.log(`[Total] Successfully ran ${successfulTestsCounter}/${this.integrationTestCases.length} integration tests`);
         console.log('*********************************************************************');
     }
 }

@@ -1,4 +1,4 @@
-import {IPathFinderHelperTestsResult, PathFinderHelperTests} from './path-finder-helper';
+import { IPathFinderHelperTestsResult, PathFinderHelperTests } from './path-finder-helper';
 import {
     IPathFinderDirectionUnitTestCase,
     pathFinderDirectionTestCases,
@@ -8,15 +8,19 @@ import {
     IPathFinderPositionUnitTestCase,
     pathFinderPositionTestCases,
     PathFinderPositionTests
-} from "./path-finder-position";
-import {IPathFinderUnitTestCase, pathFinderTestCases, PathFinderTests} from "./path-finder";
-import {ICharacterMetadata, IPathFinderOutputData} from "../../src/path-finder";
+} from './path-finder-position';
+import { IPathFinderUnitTestCase, pathFinderTestCases, PathFinderTests } from './path-finder';
+import { ICharacterMetadata, IPathFinderOutputData } from '../../src/path-finder';
 
+let totalSuccessfulUnitTestsCount: number = 0;
+let totalUnitTestsCount: number = 0;
 /* PATH FINDER HELPER UNIT TESTS */
 // TODO: Move the PathFinderHelper unit tests to a data config file as well
 const pathFinderHelperTests: PathFinderHelperTests = new PathFinderHelperTests();
 let pathFinderHelperTestResults: IPathFinderHelperTestsResult = pathFinderHelperTests.runAllTests();
 console.log(`[PathFinderHelper] Successfully ran ${pathFinderHelperTestResults.successfulTestsCount}/${pathFinderHelperTestResults.totalTestsCount}`);
+totalSuccessfulUnitTestsCount += pathFinderHelperTestResults.successfulTestsCount;
+totalUnitTestsCount += pathFinderHelperTestResults.totalTestsCount;
 
 /* PATH FINDER DIRECTION UNIT TESTS */
 let successfulTestsCounter: number = 0;
@@ -44,6 +48,8 @@ pathFinderDirectionTestCases.forEach((testCase: IPathFinderDirectionUnitTestCase
 });
 console.log(`[PathFinderDirection] Successfully ran ${successfulTestsCounter}/${pathFinderDirectionTestCases.length}`);
 console.log('*********************************************************************');
+totalSuccessfulUnitTestsCount += successfulTestsCounter;
+totalUnitTestsCount += pathFinderDirectionTestCases.length;
 
 /* PATH FINDER POSITION UNIT TESTS */
 successfulTestsCounter = 0;
@@ -73,6 +79,8 @@ pathFinderPositionTestCases.forEach((testCase: IPathFinderPositionUnitTestCase, 
 });
 console.log(`[pathFinderPosition] Successfully ran ${successfulTestsCounter}/${pathFinderPositionTestCases.length}`);
 console.log('*********************************************************************');
+totalSuccessfulUnitTestsCount += successfulTestsCounter;
+totalUnitTestsCount += pathFinderPositionTestCases.length;
 
 /* PATH FINDER UNIT TESTS */
 successfulTestsCounter = 0;
@@ -116,4 +124,10 @@ pathFinderTestCases.forEach((testCase: IPathFinderUnitTestCase, index: number) =
     }
 });
 console.log(`[pathFinder] Successfully ran ${successfulTestsCounter}/${pathFinderTestCases.length}`);
+totalSuccessfulUnitTestsCount = totalSuccessfulUnitTestsCount + successfulTestsCounter;
+totalUnitTestsCount += pathFinderTestCases.length;
+
+console.log(`[Total] Successfully ran ${totalSuccessfulUnitTestsCount}/${totalUnitTestsCount} unit tests`);
 console.log('*********************************************************************');
+
+
