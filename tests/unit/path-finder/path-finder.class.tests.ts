@@ -12,6 +12,4 @@ export class PathFinderTests extends PathFinder {
     public testTraversePath(): IPathFinderOutputData {
         return this.traversePath();
     }
-
-    // TODO: Implement unit tests for path finder class
 }
