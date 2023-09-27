@@ -10,5 +10,7 @@ export class PathFinderPositionTests extends PathFinderPosition {
         super(map, currentPosition, currentDirection);
     }
 
-    // TODO: Implement unit tests for position class
+    public testDetermineNextPosition(): void {
+        this.determineNextPosition();
+    }
 }

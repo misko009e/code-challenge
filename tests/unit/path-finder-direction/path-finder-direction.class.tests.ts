@@ -10,7 +10,7 @@ export class PathFinderDirectionTests extends PathFinderDirection {
         super(map, currentPosition, previousDirection);
     }
 
-    public testDetermineNextDirection = () => {
+    public testDetermineNextDirection(): void {
         this.determineNextDirection();
     }
 }
