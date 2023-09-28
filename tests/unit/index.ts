@@ -28,7 +28,7 @@ pathFinderDirectionTestCases.forEach((testCase: IPathFinderDirectionUnitTestCase
     console.log('*********************************************************************');
     console.log(`Testing PathFinderDirection [testDetermineNextDirection]: #${index+1}: ${testCase.name}`);
     const pathFinderDirectionTests: PathFinderDirectionTests =
-        new PathFinderDirectionTests(testCase.map, testCase.currentPosition, testCase.previousDirection);
+        new PathFinderDirectionTests(testCase.map, testCase.visitedPathPositions, testCase.currentPosition, testCase.previousDirection);
     pathFinderDirectionTests.testDetermineNextDirection();
     if (testCase.shouldBeCorrect) {
         const isDirectionOutputCorrect: boolean = testCase.outputDirection === pathFinderDirectionTests.nextDirection;
