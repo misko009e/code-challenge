@@ -87,7 +87,7 @@ export class PathFinder {
 
         while (!isPathFinished) {
             if (!direction) {
-                let pathDirection: PathFinderDirection = new PathFinderDirection(this.map, position, previousDirection);
+                let pathDirection: PathFinderDirection = new PathFinderDirection(this.map, this.visitedPathPositions, position, previousDirection);
                 if (!!pathDirection.error) {
                     this.error = pathDirection.error;
                     return { error: this.error } as IPathFinderOutputData;

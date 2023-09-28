@@ -317,4 +317,16 @@ export const integrationTestCases: IPathFinderTestCase[] = [
         lettersOutput: 'AB',
         pathOutput: '@+||+A+||+--+|B++x'
     },
+    {
+        shouldBeCorrect: true,
+        name: 'Avoid circular intersection',
+        inputData: [
+            ['@', '-', '+', '', '', '+', 'x'],
+            ['', '', 'A', '', '', '|', ''],
+            ['', '', '+', '+', '+', '+', ''],
+            ['', '', '', '+', '+', '', ''],
+        ],
+        lettersOutput: 'A',
+        pathOutput: '@-+A++++++|+x'
+    },
 ];
