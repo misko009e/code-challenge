@@ -3,7 +3,7 @@ import {
     Direction,
     ICharacterMetadata,
     IDirectionValidationData,
-    IMatrixData,
+    IMatrixData, IMatrixPositionMap,
     IPosition
 } from '../../../src/path-finder';
 import {IPathFinderHelperTestsResult} from "./path-finder-helper.model";
@@ -185,9 +185,13 @@ export class PathFinderHelperTests {
         ];
         const currentPosition: IPosition = { x: 0, y: 2 };
         const nextPotentialDirection: Direction = 'down';
+        const visitedLocations: IMatrixPositionMap = {
+            '0,0': true,
+            '0,1': true
+        };
 
         const directionValidationData: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(map, currentPosition, nextPotentialDirection);
+            PathFinderHelper.validatePotentialDirection(map, visitedLocations, currentPosition, nextPotentialDirection);
         if (!directionValidationData.isCharacterValid) {
             throw new Error('The function did not return a valid character.');
         }
@@ -198,7 +202,7 @@ export class PathFinderHelperTests {
             ['x', '-', '2']
         ];
         const directionValidationDataInvalidCharacter: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(invalidCharacterMap, currentPosition, nextPotentialDirection);
+            PathFinderHelper.validatePotentialDirection(invalidCharacterMap, visitedLocations, currentPosition, nextPotentialDirection);
         if (!directionValidationDataInvalidCharacter.isAnExistingCharacter) {
             throw new Error('The function returned a valid direction, even though the direction is off the map.');
         }
@@ -206,9 +210,35 @@ export class PathFinderHelperTests {
         // Test case 3: Non-existing character (off the map).
         const nextPotentialDirectionOutOfBounds: Direction = 'up';
         const directionValidationDataOutOfBounds: IDirectionValidationData =
-            PathFinderHelper.validatePotentialDirection(map, currentPosition, nextPotentialDirectionOutOfBounds);
+            PathFinderHelper.validatePotentialDirection(map, visitedLocations, currentPosition, nextPotentialDirectionOutOfBounds);
         if (directionValidationDataOutOfBounds.isAnExistingCharacter) {
             throw new Error('The function returned a valid direction, even though the direction is off the map.');
+        }
+
+        // Test case 4: Previously visited intersection.
+        const previouslyVisitedIntersectionMap: string[][] = [
+            ['@', '-', '+', '+', 'x'],
+            ['', '', '+', '+', ''],
+        ];
+        const previouslyVisitedIntersectionVisitedLocations: IMatrixPositionMap = {
+            '0,0': true,
+            '0,1': true,
+            '0,2': true,
+            '1,2': true,
+            '1,3': true,
+            '0,3': true,
+        };
+        const previouslyVisitedIntersectionPosition: IPosition = { x: 0, y: 3 };
+        const previouslyVisitedIntersectionDirection: Direction = 'left';
+        const directionValidationDataPreviouslyVisitedIntersection: IDirectionValidationData =
+            PathFinderHelper.validatePotentialDirection(
+                previouslyVisitedIntersectionMap,
+                previouslyVisitedIntersectionVisitedLocations,
+                previouslyVisitedIntersectionPosition,
+                previouslyVisitedIntersectionDirection
+            );
+        if (!directionValidationDataPreviouslyVisitedIntersection.isPreviouslyVisitedIntersection) {
+            throw new Error('The function returned an invalid direction, even though the direction is leading to a visited intersection.');
         }
     }
 

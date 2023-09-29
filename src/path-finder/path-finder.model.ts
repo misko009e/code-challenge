@@ -33,6 +33,7 @@ export interface IMatrixPositionMap {
 }
 
 export interface IDirectionValidationData {
+    isPreviouslyVisitedIntersection: boolean;
     isAnExistingCharacter: boolean;
     isCharacterValid: boolean;
 }

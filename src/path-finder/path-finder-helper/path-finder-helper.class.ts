@@ -1,5 +1,11 @@
-import { ICharacterMetadata, IDirectionValidationData, IMatrixData, IPosition } from '../path-finder.model';
-import {Direction, EMPTY_SPACE_CHARACTER, VALID_CHARACTERS} from '../common';
+import {
+    ICharacterMetadata,
+    IDirectionValidationData,
+    IMatrixData,
+    IMatrixPositionMap,
+    IPosition
+} from '../path-finder.model';
+import {Direction, EMPTY_SPACE_CHARACTER, INTERSECTION_CHARACTER, VALID_CHARACTERS} from '../common';
 
 export class PathFinderHelper {
     public static determineMatrixSize(map: string[][]): IMatrixData {
@@ -73,14 +79,19 @@ export class PathFinderHelper {
     }
 
     public static validatePotentialDirection(map: string[][],
+                                             visitedPathPositions: IMatrixPositionMap,
                                              currentPosition: IPosition,
                                              nextPotentialDirection: Direction): IDirectionValidationData {
         // We find a position which should represent the next move using the suggested direction
         const nextPotentialPosition: IPosition = PathFinderHelper.getNextDirectionPosition(currentPosition, nextPotentialDirection);
         // We verify that there is an actual character (not necessarily valid) on the suggested position
         const isAnExistingCharacter: boolean = PathFinderHelper.doesAnyCharacterExist(map, nextPotentialPosition.x, nextPotentialPosition.y);
+        // We check that we are not backtracking by checking have we visited this intersection yet
+        const isPreviouslyVisitedIntersection: boolean =
+            !!visitedPathPositions[`${nextPotentialPosition.x},${nextPotentialPosition.y}`]
+            && map[nextPotentialPosition.x][nextPotentialPosition.y] === INTERSECTION_CHARACTER;
         // We check if the character is valid
         const isCharacterValid: boolean = PathFinderHelper.isCharacterValid(map, nextPotentialPosition.x, nextPotentialPosition.y);
-        return { isAnExistingCharacter, isCharacterValid } as IDirectionValidationData;
+        return { isPreviouslyVisitedIntersection, isAnExistingCharacter, isCharacterValid } as IDirectionValidationData;
     }
 }
